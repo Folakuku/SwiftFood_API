@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../db/db.config");
 
-const Transaction = sequelize.define("Transaction", {
+const Transaction = sequelize.define("transaction", {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
