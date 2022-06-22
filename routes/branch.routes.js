@@ -6,7 +6,23 @@ const { generateHashedPassword } = require("../utils/password");
 
 // Get Branches
 route.get("/", async (req, res) => {
-  res.send("branches");
+  try {
+    const branches = await Branch.findAll();
+    branches.forEach((branch) => {
+      branch.set({ password: "" });
+    });
+    res.status(200).json({
+      status: true,
+      message: "These are all registered branches ",
+      data: branches,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      status: false,
+      message: "UNKNOWN ERROR",
+    });
+  }
 });
 
 // Register Branch
@@ -36,6 +52,7 @@ route.post("/register", isVendor, async (req, res) => {
     const exist = await Branch.findAll({
       where: { vendorId: vendor.id, branchName },
     });
+
     if (exist.length > 0) {
       return res.status(400).json({
         status: false,

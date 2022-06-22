@@ -83,9 +83,14 @@ route.get("/branches", isVendor, async (req, res) => {
   const id = req.user.id;
   const vendor = await Vendor.findOne({ where: { id }, include: Branch });
   vendor.set({ password: "" });
+  const branches = vendor.branches;
+  branches.forEach((branch) => {
+    branch.set({ password: "" });
+  });
+  console.log(vendor.toJSON());
   res.status(200).json({
     status: true,
-    message: "These are the branches of this vendor",
+    message: "These are the branches under this vendor",
     data: vendor,
   });
 });

@@ -10,7 +10,6 @@ const checkRole = (res, authHeader) => {
       message: "No token provided",
     });
   }
-
   try {
     const token = authHeader.split(" ")[1];
     return verifyToken(token);
@@ -29,6 +28,7 @@ const isVendor = async (req, res, next) => {
     const payload = checkRole(res, authHeader);
     const role = payload.role;
     if (!role) return;
+    console.log(role);
     if (role !== "vendor") {
       return res.status(401).json({
         status: false,
@@ -38,7 +38,6 @@ const isVendor = async (req, res, next) => {
     const vendor = await Vendor.findOne({ where: { id: payload.id } });
     vendor.set({ password: "" });
     req.user = vendor;
-    console.log(role);
     next();
   } catch (error) {
     console.log(error);
@@ -51,6 +50,7 @@ const isBranch = async (req, res, next) => {
     const payload = checkRole(res, authHeader);
     const role = payload.role;
     if (!role) return;
+    console.log(role);
     if (role !== "branch") {
       return res.status(401).json({
         status: false,
@@ -60,7 +60,6 @@ const isBranch = async (req, res, next) => {
     const branch = await Branch.findOne({ where: { id: payload.id } });
     branch.set({ password: "" });
     req.user = branch;
-    console.log(role);
     next();
   } catch (error) {
     console.log(error);
