@@ -9,10 +9,10 @@ const { MealReview } = require("../models/mealReview.model");
 const { BranchRating } = require("../models/branchRating.model");
 
 Vendor.hasMany(Branch, {
-  foreignKey: "mainBranch",
+  foreignKey: "vendorId",
 });
 Branch.belongsTo(Vendor, {
-  foreignKey: "mainBranch",
+  foreignKey: "vendorId",
 });
 Customer.hasMany(Transaction);
 Transaction.belongsTo(Customer);

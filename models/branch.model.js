@@ -24,6 +24,7 @@ const Branch = sequelize.define("branch", {
   landmark: { type: DataTypes.STRING },
   isVerified: { type: DataTypes.BOOLEAN, defaultValue: false },
   password: { type: DataTypes.STRING, allowNull: false },
+  vendorId: { type: DataTypes.STRING, allowNull: false },
 });
 
 module.exports = { Branch };

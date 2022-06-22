@@ -12,21 +12,12 @@ route.get("/", async (req, res) => {
 // Register Branch
 route.post("/register", isVendor, async (req, res) => {
   try {
-    let { branchName, brandName, email, phone, state, city, password } =
-      req.body;
-    if (
-      !brandName ||
-      !branchName ||
-      !email ||
-      !phone ||
-      !state ||
-      !city ||
-      !password
-    ) {
+    let { branchName, email, phone, state, city, password } = req.body;
+    if (!branchName || !phone || !state || !city || !password) {
       return res.status(400).json({
         status: false,
         message:
-          " brandName, branchName, email, phone, state, city, password are all required for registration",
+          " branchName, phone, state, city, password are all required for registration",
       });
     }
 
@@ -36,16 +27,23 @@ route.post("/register", isVendor, async (req, res) => {
         message: "Password must have at least 6 characters",
       });
     }
+    const vendor = req.user;
 
-    const exist = await Branch.findAll({ where: { email } });
+    if (!email) {
+      req.body.email = vendor.email;
+    }
+
+    const exist = await Branch.findAll({
+      where: { vendorId: vendor.id, branchName },
+    });
     if (exist.length > 0) {
       return res.status(400).json({
         status: false,
-        message: "Email already registered",
+        message: "A branch is already registered with this name",
       });
     }
-    const vendor = req.user;
-    req.body.mainBranch = vendor.id;
+    req.body.vendorId = vendor.id;
+    req.body.brandName = vendor.brandName;
     req.body.password = generateHashedPassword(password);
     const branch = await Branch.create(req.body);
     branch.set({ password: "" });

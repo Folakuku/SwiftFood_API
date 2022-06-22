@@ -36,12 +36,12 @@ route.get("/", async (req, res) => {
 // Register Vendor
 route.post("/register", async (req, res) => {
   try {
-    let { vendorName, email, phone, password } = req.body;
+    let { brandName, email, phone, password } = req.body;
 
-    if (!vendorName || !email || !phone || !password) {
+    if (!brandName || !email || !phone || !password) {
       return res.status(400).json({
         status: false,
-        message: "vendorName, email, phone and password must be supplied",
+        message: "brandName, email, phone and password must be supplied",
       });
     }
 

@@ -6,6 +6,7 @@ const SalesHistory = sequelize.define("salesHistory", {
   price: { type: DataTypes.FLOAT, allowNull: false },
   discount: { type: DataTypes.FLOAT, allowNull: false },
   date: { type: DataTypes.DATE, defaultValue: DataTypes.NOW, allowNull: false },
+  branchId: { type: DataTypes.INTEGER, allowNull: false },
 });
 
 module.exports = { SalesHistory };

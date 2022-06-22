@@ -14,6 +14,7 @@ const Transaction = sequelize.define("transaction", {
     type: DataTypes.ENUM("pending", "successful", "cancelled"),
     defaultValue: "pending",
   },
+  customerId: { type: DataTypes.INTEGER, allowNull: false },
 });
 
 module.exports = { Transaction };
