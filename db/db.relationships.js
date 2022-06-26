@@ -8,12 +8,12 @@ const { SalesHistory } = require("../models/salesHistory.model");
 const { MealReview } = require("../models/mealReview.model");
 const { BranchRating } = require("../models/branchRating.model");
 
-Vendor.hasMany(Branch, {
-  foreignKey: "vendorId",
-});
-Branch.belongsTo(Vendor, {
-  foreignKey: "vendorId",
-});
+// Vendor.hasMany(Branch, {
+//   foreignKey: "vendorId",
+// });
+// Branch.belongsTo(Vendor, {
+//   foreignKey: "vendorId",
+// });
 Customer.hasMany(Transaction);
 Transaction.belongsTo(Customer);
 Transaction.belongsToMany(Meal, { through: Order });
