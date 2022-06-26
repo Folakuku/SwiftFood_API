@@ -3,35 +3,53 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
-      "Vendors",
+      "Branches",
       [
         {
           branchName: "Branch",
+          brandName: "sweeter",
           email: "branch@gmail.com",
           phone: "080932232",
           state: "Abuja",
           city: "Abuja",
           password: "EMPcUB1yhOFTCty6SZCyhO86NxHnCsnhA0ap6Wfgut7raoGMjh9DC",
+          vendorId: "3",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           branchName: "Branch2",
+          brandName: "sweeter",
           email: "branch@gmail.com",
           phone: "080932232",
           state: "Abuja",
           city: "Abuja",
           password: "EMPcUB1yhOFTCty6SZCyhO86NxHnCsnhA0ap6Wfgut7raoGMjh9DC",
+          vendorId: "3",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          branchName: "Branch3",
+          branchName: "Branch4",
+          brandName: "food",
           email: "branch@gmail.com",
           phone: "080932232",
           state: "Abuja",
           city: "Abuja",
           password: "EMPcUB1yhOFTCty6SZCyhO86NxHnCsnhA0ap6Wfgut7raoGMjh9DC",
+          vendorId: "4",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          branchName: "Branch5",
+          brandName: "food",
+          email: "branch2@gmail.com",
+          phone: "080932232",
+          state: "Abuja",
+          city: "Abuja",
+          password: "EMPcUB1yhOFTCty6SZCyhO86NxHnCsnhA0ap6Wfgut7raoGMjh9DC",
+          vendorId: "4",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -41,6 +59,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("Vendors", null, {});
+    await queryInterface.bulkDelete("Branches", null, {});
   },
 };

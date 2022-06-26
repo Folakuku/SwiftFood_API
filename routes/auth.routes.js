@@ -43,17 +43,17 @@ route.post("/vendors/login", async (req, res) => {
 // Branch Login
 route.post("/branches/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const { branchName, password } = req.body;
+    if (!branchName || !password) {
       return res
         .status(400)
-        .json({ status: false, message: "Email and password is required" });
+        .json({ status: false, message: "branchName and password is required" });
     }
-    const branch = await Branch.findOne({ where: { email } });
+    const branch = await Branch.findOne({ where: { branchName } });
     if (!branch) {
       return res
         .status(400)
-        .json({ status: false, message: "Email not registered" });
+        .json({ status: false, message: "branch not registered" });
     }
 
     const valid = comparePassword(password, branch.password);

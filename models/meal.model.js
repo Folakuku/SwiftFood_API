@@ -12,6 +12,7 @@ Meal.init(
       primaryKey: true,
     },
     name: { type: DataTypes.STRING, allowNull: false },
+    brandName: { type: DataTypes.STRING, allowNull: false },
     price: { type: DataTypes.FLOAT, allowNull: false },
     discount: { type: DataTypes.FLOAT, allowNull: false },
     description: { type: DataTypes.TEXT, allowNull: false },
@@ -21,6 +22,7 @@ Meal.init(
       type: DataTypes.ENUM("available", "unavailable"),
       defaultValue: "available",
     },
+    branchId: { type: DataTypes.INTEGER, allowNull: false },
   },
   {
     sequelize,

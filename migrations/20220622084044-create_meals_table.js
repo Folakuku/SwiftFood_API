@@ -10,6 +10,7 @@ module.exports = {
         primaryKey: true,
       },
       name: { type: Sequelize.STRING, allowNull: false },
+      brandName: { type: Sequelize.STRING, allowNull: false },
       price: { type: Sequelize.FLOAT, allowNull: false },
       discount: { type: Sequelize.FLOAT, allowNull: false },
       description: { type: Sequelize.TEXT, allowNull: false },
@@ -19,6 +20,7 @@ module.exports = {
         type: Sequelize.ENUM("available", "unavailable"),
         defaultValue: "available",
       },
+      branchId: { type: Sequelize.INTEGER, allowNull: false },
       createdAt: { allowNull: false, type: Sequelize.DATE },
       updatedAt: { allowNull: false, type: Sequelize.DATE },
     });
