@@ -2,14 +2,11 @@ const { Sequelize } = require("sequelize");
 const dontenv = require("dotenv");
 dontenv.config();
 
-const sequelize = new Sequelize(
-  "swiftfood",
-  process.env.DB_USERNAME,
-  process.env.DB_PASSWORD,
-  {
-    host: "localhost",
-    dialect: "mysql",
-  }
-);
+const { DB_NAME, DB_USERNAME, DB_PASSWORD, DB_HOST } = process.env;
+
+const sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
+  host: DB_HOST,
+  dialect: "mysql",
+});
 
 module.exports = { sequelize };

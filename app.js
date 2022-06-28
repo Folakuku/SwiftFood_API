@@ -22,7 +22,7 @@ app.use("/api/v1/auth", authRoutes);
 const PORT = process.env.PORT || 5000;
 (async () => {
   try {
-    // await sequelize.sync({ alter: true });
+    await sequelize.sync({ alter: true });
     await sequelize.authenticate();
     app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
     console.log("Database Connected");
