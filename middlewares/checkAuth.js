@@ -1,5 +1,5 @@
-const { Vendor } = require("../models/vendor.model");
-const { Branch } = require("../models/branch.model");
+const { Vendor } = require("../models");
+const { Branch } = require("../models");
 const { verifyToken } = require("../utils/token");
 
 const checkRole = (res, authHeader) => {
@@ -28,7 +28,6 @@ const isVendor = async (req, res, next) => {
     const payload = checkRole(res, authHeader);
     const role = payload.role;
     if (!role) return;
-    console.log(role);
     if (role !== "vendor") {
       return res.status(401).json({
         status: false,

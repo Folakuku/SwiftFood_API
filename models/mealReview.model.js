@@ -1,24 +1,24 @@
-const { DataTypes, Model } = require("sequelize");
-const { sequelize } = require("../db/db.config");
+"use strict";
+const { Model } = require("sequelize");
+module.exports = (sequelize, DataTypes) => {
+  class MealReview extends Model {}
 
-class MealReview extends Model {}
-
-MealReview.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
+  MealReview.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      rating: { type: DataTypes.TINYINT, allowNull: false },
+      review: { type: DataTypes.TEXT },
     },
-    rating: { type: DataTypes.TINYINT, allowNull: false },
-    review: { type: DataTypes.TEXT },
-  },
-  {
-    sequelize,
-    tableName: "mealReviews",
-    modelName: "MealReview",
-  }
-);
-
-module.exports = { MealReview };
+    {
+      sequelize,
+      tableName: "mealReviews",
+      modelName: "MealReview",
+    }
+  );
+  return MealReview;
+};

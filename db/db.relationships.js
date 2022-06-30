@@ -1,12 +1,12 @@
-const { Vendor } = require("../models/vendor.model");
-const { Branch } = require("../models/branch.model");
-const { Customer } = require("../models/customer.model");
-const { Meal } = require("../models/meal.model");
-const { Transaction } = require("../models/transaction.model");
-const { Order } = require("../models/order.model");
-const { SalesHistory } = require("../models/salesHistory.model");
-const { MealReview } = require("../models/mealReview.model");
-const { BranchRating } = require("../models/branchRating.model");
+const { Vendor } = require("../models");
+const { Branch } = require("../models");
+const { Customer } = require("../models");
+const { Meal } = require("../models");
+const { Transaction } = require("../models");
+const { Order } = require("../models");
+const { SalesHistory } = require("../models");
+const { MealReview } = require("../models");
+const { BranchRating } = require("../models");
 
 // Vendor.hasMany(Branch, {
 //   foreignKey: "vendorId",
@@ -14,16 +14,17 @@ const { BranchRating } = require("../models/branchRating.model");
 // Branch.belongsTo(Vendor, {
 //   foreignKey: "vendorId",
 // });
-Customer.hasMany(Transaction);
-Transaction.belongsTo(Customer);
-Transaction.belongsToMany(Meal, { through: Order });
-Meal.belongsToMany(Transaction, { through: Order });
-Meal.belongsTo(Branch);
-Branch.hasMany(Meal);
-SalesHistory.hasMany(Order);
-Order.belongsTo(SalesHistory);
-Branch.hasOne(SalesHistory);
-SalesHistory.belongsTo(Branch);
+// Customer.hasMany(Transaction);
+// Transaction.belongsTo(Customer);
+// Transaction.belongsToMany(Meal, { through: Order });
+// Meal.belongsToMany(Transaction, { through: Order });
+// Meal.belongsTo(Branch);
+// Branch.hasMany(Meal);
+// SalesHistory.hasMany(Order);
+// Order.belongsTo(SalesHistory);
+// Branch.hasOne(SalesHistory);
+// SalesHistory.belongsTo(Branch);
+// // Here
 Branch.hasMany(BranchRating);
 Customer.hasMany(BranchRating);
 BranchRating.belongsTo(Branch);

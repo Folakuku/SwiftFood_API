@@ -1,7 +1,7 @@
 const route = require("express").Router();
 const { isVendor } = require("../middlewares/checkAuth");
-const { Branch } = require("../models/branch.model");
-const { Vendor } = require("../models/vendor.model");
+const { Branch } = require("../models");
+const { Vendor } = require("../models");
 const { generateHashedPassword } = require("../utils/password");
 
 // Get All Vendors
@@ -80,19 +80,26 @@ route.post("/register", async (req, res) => {
 
 // Get All Branches
 route.get("/branches", isVendor, async (req, res) => {
-  const id = req.user.id;
-  const vendor = await Vendor.findOne({ where: { id }, include: Branch });
-  vendor.set({ password: "" });
-  const branches = vendor.branches;
-  branches.forEach((branch) => {
-    branch.set({ password: "" });
-  });
-  console.log(vendor.toJSON());
-  res.status(200).json({
-    status: true,
-    message: "These are the branches under this vendor",
-    data: vendor,
-  });
+  try {
+    const id = req.user.id;
+    const vendor = await Vendor.findOne({ where: { id }, include: "branches" });
+    vendor.set({ password: undefined });
+    const branches = vendor.branches;
+    branches.forEach((branch) => {
+      branch.set({ password: undefined });
+    });
+    res.status(200).json({
+      status: true,
+      message: "These are the branches under this vendor",
+      data: vendor,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      status: false,
+      message: "UNKNOWN ERROR",
+    });
+  }
 });
 
 module.exports = route;

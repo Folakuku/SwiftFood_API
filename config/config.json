@@ -1,15 +1,15 @@
 {
   "development": {
-    "username": "root",
-    "password": "12121212",
+    "username": "kuku",
+    "password": "#Nathanzy1",
     "database": "swiftfood",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
+    "username": "kuku",
+    "password": "#Nathanzy1",
+    "database": "swiftfood",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

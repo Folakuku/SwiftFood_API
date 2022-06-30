@@ -1,15 +1,17 @@
 const route = require("express").Router();
-const { Branch } = require("../models/branch.model");
-const { Meal } = require("../models/meal.model");
+const { Vendor } = require("../models");
+const { Branch } = require("../models");
+const { Meal } = require("../models");
 const { isVendor } = require("../middlewares/checkAuth");
 const { generateHashedPassword } = require("../utils/password");
 
 // Get Branches
 route.get("/", async (req, res) => {
   try {
-    const branches = await Branch.findAll();
+    const branches = await Branch.findAll({ include: "vendor" });
     branches.forEach((branch) => {
-      branch.set({ password: "" });
+      branch.set({ password: undefined });
+      branch.vendor.set({ password: undefined });
     });
     res.status(200).json({
       status: true,
@@ -63,7 +65,7 @@ route.post("/register", isVendor, async (req, res) => {
     req.body.brandName = vendor.brandName;
     req.body.password = generateHashedPassword(password);
     const branch = await Branch.create(req.body);
-    branch.set({ password: "" });
+    branch.set({ password: undefined });
 
     res.status(201).json({
       status: true,
@@ -86,9 +88,9 @@ route.get("/:branchName/menu", async (req, res) => {
     const branchName = req.params.branchName;
     const branch = await Branch.findOne({
       where: { branchName },
-      include: Meal,
+      include: "meals",
     });
-    branch.set({ password: "" });
+    branch.set({ password: undefined });
     res.status(200).json({
       status: true,
       message: "This is the branch with it's menu ",
