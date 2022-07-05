@@ -1,9 +1,8 @@
 const route = require("express").Router();
-const { Vendor } = require("../models");
-const { Branch } = require("../models");
-const { Meal } = require("../models");
-const { isVendor } = require("../middlewares/checkAuth");
+const { Vendor, Branch, Meal, SalesHistory } = require("../models");
+const { isVendor, isBranch } = require("../middlewares/checkAuth");
 const { generateHashedPassword } = require("../utils/password");
+const { errorMsg } = require("../utils/response");
 
 // Get Branches
 route.get("/", async (req, res) => {
@@ -27,7 +26,7 @@ route.get("/", async (req, res) => {
   }
 });
 
-// Register Branch
+// Register Branch By Vendor
 route.post("/register", isVendor, async (req, res) => {
   try {
     let { branchName, email, phone, state, city, password } = req.body;
@@ -65,7 +64,9 @@ route.post("/register", isVendor, async (req, res) => {
     req.body.brandName = vendor.brandName;
     req.body.password = generateHashedPassword(password);
     const branch = await Branch.create(req.body);
+    const branchId = branch.id;
     branch.set({ password: undefined });
+    const salesHistory = await SalesHistory.create({ branchId });
 
     res.status(201).json({
       status: true,
@@ -102,6 +103,27 @@ route.get("/:branchName/menu", async (req, res) => {
       status: false,
       message: "UNKNOWN ERROR",
     });
+  }
+});
+
+// Get Branch Sales
+// route.get("/:branchName/sales",isBranch, async (req, res) => {
+route.get("/:branchName/sales", async (req, res) => {
+  try {
+    const branchName = req.params.branchName;
+    const branch = await Branch.findOne({
+      where: { branchName },
+      include: "sales",
+    });
+    branch.set({ password: undefined });
+    res.status(200).json({
+      status: true,
+      message: "This is the sales record of this branch",
+      data: branch,
+    });
+  } catch (err) {
+    console.log(err);
+    return errorMsg(res, "UNKNOWN ERROR", 500, err.message);
   }
 });
 

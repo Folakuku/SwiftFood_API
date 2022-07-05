@@ -3,9 +3,12 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
     static associate({ Transaction, Meal, SalesHistory }) {
-      this.belongsTo(Meal, { foreignKey: "mealId" }),
-        this.belongsTo(Transaction, { foreignKey: "transactionId" }),
-        this.belongsTo(SalesHistory, { foreignKey: "salesId" });
+      this.belongsTo(Meal, { foreignKey: "mealId", as: "meals" }),
+        this.belongsTo(Transaction, {
+          foreignKey: "transactionId",
+          as: "transactions",
+        }),
+        this.belongsTo(SalesHistory, { foreignKey: "salesId", as: "sales" });
     }
   }
 
@@ -23,6 +26,11 @@ module.exports = (sequelize, DataTypes) => {
       quantity: { type: DataTypes.INTEGER, allowNull: false },
       price: { type: DataTypes.FLOAT, allowNull: false },
       discount: { type: DataTypes.FLOAT, allowNull: false },
+      date: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+        allowNull: false,
+      },
     },
     {
       sequelize,

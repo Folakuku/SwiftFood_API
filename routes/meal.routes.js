@@ -2,6 +2,7 @@ const route = require("express").Router();
 const { isBranch } = require("../middlewares/checkAuth");
 const { Meal } = require("../models");
 const { Branch } = require("../models");
+const { errorMsg } = require("../utils/response");
 
 //Add Meal
 route.post("/add", isBranch, async (req, res) => {
@@ -50,10 +51,11 @@ route.post("/add", isBranch, async (req, res) => {
 // GET MENU FOR ALL MEALS
 route.get("/", async (req, res) => {
   try {
-    const meals = await Meal.findAll({ include: "branch" });
-    for (const meal of meals) {
-      meal.branch.set({ password: undefined });
-    }
+    const meals = await Meal.findAll();
+    // const meals = await Meal.findAll({ include: "branch" });
+    // for (const meal of meals) {
+    //   meal.branch.set({ password: undefined });
+    // }
     res.status(200).json({
       status: true,
       message: "Here are all meals",
@@ -61,10 +63,7 @@ route.get("/", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      status: false,
-      message: "UNKNOWN ERROR",
-    });
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message);
   }
 });
 

@@ -78,7 +78,7 @@ route.post("/register", async (req, res) => {
   }
 });
 
-// Get All Branches
+// Get All Branches Under A Vendor
 route.get("/branches", isVendor, async (req, res) => {
   try {
     const id = req.user.id;
@@ -101,5 +101,7 @@ route.get("/branches", isVendor, async (req, res) => {
     });
   }
 });
+
+// GET Sales Records Of Branches
 
 module.exports = route;

@@ -3,20 +3,18 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class SalesHistory extends Model {
     static associate({ Order, Branch }) {
-      this.belongsTo(Branch, { foreignKey: "branchId" }),
-        this.hasMany(Order, { foreignKey: "salesId" });
+      this.belongsTo(Branch, { as: "branch", foreignKey: "branchId" }),
+        this.hasMany(Order, { as: "orders", foreignKey: "salesId" });
     }
   }
 
   SalesHistory.init(
     {
-      quantity: { type: DataTypes.INTEGER, allowNull: false },
-      price: { type: DataTypes.FLOAT, allowNull: false },
-      discount: { type: DataTypes.FLOAT, allowNull: false },
-      date: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
+      id: {
+        type: DataTypes.INTEGER,
         allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
       },
       branchId: { type: DataTypes.INTEGER, allowNull: false },
     },

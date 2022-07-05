@@ -9,21 +9,21 @@ route.post("/customers/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return errorMsg(res, "email and password are required for login", "", 400);
+      return errorMsg(res, "email and password are required for login");
     }
     const customer = await Customer.findOne({ where: { email } });
     if (!customer) {
-      return errorMsg(res, "Email not registered", "");
+      return errorMsg(res, "Email not registered");
     }
     const valid = comparePassword(password, customer.password);
     if (!valid) {
-      return errorMsg(res, "Password Incorrect", "", 401);
+      return errorMsg(res, "Password Incorrect", 401);
     }
     const token = generateToken(customer.id, "customer");
     customer.set({ password: undefined });
     successMsg(res, "Login Successfully", { customer, token }, 200);
   } catch (error) {
-    errorMsg(res, "UNKNOWN ERROR", error.message, 500);
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message);
   }
 });
 

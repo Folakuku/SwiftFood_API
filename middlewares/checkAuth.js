@@ -1,6 +1,6 @@
-const { Vendor } = require("../models");
-const { Branch } = require("../models");
+const { Vendor, Branch, Customer } = require("../models");
 const { verifyToken } = require("../utils/token");
+const { errorMsg } = require("../utils/response");
 
 const checkRole = (res, authHeader) => {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -15,11 +15,13 @@ const checkRole = (res, authHeader) => {
     return verifyToken(token);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      status: false,
-      message: "UNKNOWN ERROR",
-    });
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message);
   }
+};
+
+const isAdmin = async (res, req, next) => {
+  // check if admin
+  next();
 };
 
 const isVendor = async (req, res, next) => {
@@ -27,18 +29,22 @@ const isVendor = async (req, res, next) => {
     const authHeader = req.headers.authorization;
     const payload = checkRole(res, authHeader);
     const role = payload.role;
-    if (!role) return;
-    if (role !== "vendor") {
+    if (!role || role !== "vendor") {
       return res.status(401).json({
         status: false,
         message: "Route is only accessible to vendors",
       });
     }
     const vendor = await Vendor.findOne({ where: { id: payload.id } });
-    vendor.set({ password: "" });
+    if (!vendor) {
+      console.log("no vendor");
+      return errorMsg(res, "VendorId Not Recognized");
+    }
+    vendor.set({ password: undefined });
     req.user = vendor;
     next();
   } catch (error) {
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message);
     console.log(error);
   }
 };
@@ -48,21 +54,37 @@ const isBranch = async (req, res, next) => {
     const authHeader = req.headers.authorization;
     const payload = checkRole(res, authHeader);
     const role = payload.role;
-    if (!role) return;
-    console.log(role);
-    if (role !== "branch") {
+    if (!role || role !== "branch") {
       return res.status(401).json({
         status: false,
         message: "Route is only accessible to branches",
       });
     }
     const branch = await Branch.findOne({ where: { id: payload.id } });
-    branch.set({ password: "" });
+    branch.set({ password: undefined });
     req.user = branch;
     next();
   } catch (error) {
     console.log(error);
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message);
   }
 };
 
-module.exports = { isVendor, isBranch };
+const isLoggedIn = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+    const payload = checkRole(res, authHeader);
+    const role = payload.role;
+    if (!role || role !== "customer") {
+      return errorMsg(res, "Route is only accessible to logged in customers");
+    }
+    const customer = await Customer.findOne({ where: { id: payload.id } });
+    customer.set({ password: undefined });
+    req.user = customer;
+    next();
+  } catch (error) {
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message);
+  }
+};
+
+module.exports = { isVendor, isBranch, isLoggedIn, isAdmin };
