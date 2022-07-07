@@ -11,7 +11,7 @@ router.get("/", isAdmin, async (req, res) => {
   try {
     const sales = await SalesHistory.findAll({ include: "orders" });
     // const sales = await SalesHistory.findAll();
-    return successMsg(res, "Here are all th Sales", sales, 200);
+    return successMsg(res, "Here are all the Sales", sales, 200);
   } catch (error) {
     console.log(error);
     errorMsg(res, "UNKNOWN ERROR", 500, error.message);

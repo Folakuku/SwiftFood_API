@@ -19,10 +19,7 @@ route.get("/", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({
-      status: false,
-      message: "UNKNOWN ERROR",
-    });
+    return errorMsg(res, "UNKNOWN ERROR", 500, error.message);
   }
 });
 
@@ -76,10 +73,7 @@ route.post("/register", isVendor, async (req, res) => {
     console.log("branch registered");
   } catch (err) {
     console.log(err);
-    return res.status(500).json({
-      status: false,
-      message: "UNKNOWN ERROR",
-    });
+    return errorMsg(res, "UNKNOWN ERROR", 500, err.message);
   }
 });
 
@@ -99,10 +93,7 @@ route.get("/:branchName/menu", async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({
-      status: false,
-      message: "UNKNOWN ERROR",
-    });
+    return errorMsg(res, "UNKNOWN ERROR", 500, err.message);
   }
 });
 

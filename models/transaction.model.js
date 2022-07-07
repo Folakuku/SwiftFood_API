@@ -21,11 +21,11 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      date: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-        allowNull: false,
-      },
+      // date: {
+      //   type: DataTypes.DATE,
+      //   defaultValue: DataTypes.NOW,
+      //   allowNull: false,
+      // },
       total: { type: DataTypes.FLOAT, allowNull: false },
       status: {
         type: DataTypes.ENUM("pending", "successful", "cancelled"),

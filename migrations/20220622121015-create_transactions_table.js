@@ -9,11 +9,11 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      date: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
-        allowNull: false,
-      },
+      // date: {
+      //   type: Sequelize.DATE,
+      //   defaultValue: Sequelize.NOW,
+      //   allowNull: false,
+      // },
       total: { type: Sequelize.FLOAT, allowNull: false },
       status: {
         type: Sequelize.ENUM("pending", "successful", "cancelled"),
