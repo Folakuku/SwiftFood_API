@@ -3,6 +3,7 @@ const { Vendor, Branch, Meal, SalesHistory } = require("../models");
 const { isVendor, isBranch } = require("../middlewares/checkAuth");
 const { generateHashedPassword } = require("../utils/password");
 const { errorMsg } = require("../utils/response");
+const { BranchSignupValidation } = require("../middlewares/validators");
 
 // Get Branches
 route.get("/", async (req, res) => {
@@ -24,7 +25,7 @@ route.get("/", async (req, res) => {
 });
 
 // Register Branch By Vendor
-route.post("/register", isVendor, async (req, res) => {
+route.post("/register", isVendor, BranchSignupValidation, async (req, res) => {
   try {
     let { branchName, email, phone, state, city, password } = req.body;
     if (!branchName || !phone || !state || !city || !password) {

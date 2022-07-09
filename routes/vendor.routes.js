@@ -1,5 +1,6 @@
 const route = require("express").Router();
 const { isVendor } = require("../middlewares/checkAuth");
+const { VendorSignupValidation } = require("../middlewares/validators");
 const { Branch } = require("../models");
 const { Vendor } = require("../models");
 const { generateHashedPassword } = require("../utils/password");
@@ -34,7 +35,7 @@ route.get("/", async (req, res) => {
 });
 
 // Register Vendor
-route.post("/register", async (req, res) => {
+route.post("/register", VendorSignupValidation, async (req, res) => {
   try {
     let { brandName, email, phone, password } = req.body;
 

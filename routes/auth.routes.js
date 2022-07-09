@@ -1,11 +1,15 @@
-const route = require("express").Router();
+const router = require("express").Router();
 const { Vendor, Branch, Customer } = require("../models");
 const { generateToken } = require("../utils/token");
 const { comparePassword } = require("../utils/password");
 const { errorMsg, successMsg } = require("../utils/response");
+const {
+  BranchSigninValidation,
+  SigninValidation,
+} = require("../middlewares/validators");
 
 // Customer Login
-route.post("/customers/login", async (req, res) => {
+router.post("/customers/login", SigninValidation, async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -28,7 +32,7 @@ route.post("/customers/login", async (req, res) => {
 });
 
 // Vendor Login
-route.post("/vendors/login", async (req, res) => {
+router.post("/vendors/login", SigninValidation, async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -64,7 +68,7 @@ route.post("/vendors/login", async (req, res) => {
 });
 
 // Branch Login
-route.post("/branches/login", async (req, res) => {
+router.post("/branches/login", BranchSigninValidation, async (req, res) => {
   try {
     const { branchName, password } = req.body;
     if (!branchName || !password) {
@@ -99,4 +103,4 @@ route.post("/branches/login", async (req, res) => {
   }
 });
 
-module.exports = route;
+module.exports = router;

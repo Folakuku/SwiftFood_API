@@ -3,9 +3,10 @@ const { Customer, Transaction, Meal } = require("../models");
 const { errorMsg, successMsg } = require("../utils/response");
 const { generateHashedPassword } = require("../utils/password");
 const { isLoggedIn } = require("../middlewares/checkAuth");
+const { CustomerSignupValidation } = require("../middlewares/validators");
 
 // Customer Registration
-route.post("/register", async (req, res) => {
+route.post("/register", CustomerSignupValidation, async (req, res) => {
   const { first_name, last_name, email, phone, password } = req.body;
   try {
     if (!first_name || !last_name || !email || !phone || !password) {
