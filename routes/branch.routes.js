@@ -1,4 +1,4 @@
-const route = require("express").Router();
+const router = require("express").Router();
 const { Vendor, Branch, Meal, SalesHistory } = require("../models");
 const { isVendor, isBranch } = require("../middlewares/checkAuth");
 const { generateHashedPassword } = require("../utils/password");
@@ -6,9 +6,20 @@ const { errorMsg } = require("../utils/response");
 const { BranchSignupValidation } = require("../middlewares/validators");
 
 // Get Branches
-route.get("/", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const branches = await Branch.findAll({ include: "vendor" });
+    const state = req.query.state;
+    const city = req.query.city;
+    let branches;
+    if (state && city) {
+      branches = await Branch.findAll({
+        where: { state, city },
+        include: "vendor",
+      });
+    } else {
+      branches = await Branch.findAll({ include: "vendor" });
+    }
+
     branches.forEach((branch) => {
       branch.set({ password: undefined });
       branch.vendor.set({ password: undefined });
@@ -25,7 +36,7 @@ route.get("/", async (req, res) => {
 });
 
 // Register Branch By Vendor
-route.post("/register", isVendor, BranchSignupValidation, async (req, res) => {
+router.post("/register", isVendor, BranchSignupValidation, async (req, res) => {
   try {
     let { branchName, email, phone, state, city, password } = req.body;
     if (!branchName || !phone || !state || !city || !password) {
@@ -79,7 +90,7 @@ route.post("/register", isVendor, BranchSignupValidation, async (req, res) => {
 });
 
 // Get Branch Menu
-route.get("/:branchName/menu", async (req, res) => {
+router.get("/:branchName/menu", async (req, res) => {
   try {
     const branchName = req.params.branchName;
     const branch = await Branch.findOne({
@@ -99,8 +110,8 @@ route.get("/:branchName/menu", async (req, res) => {
 });
 
 // Get Branch Sales
-// route.get("/:branchName/sales",isBranch, async (req, res) => {
-route.get("/:branchName/sales", async (req, res) => {
+// router.get("/:branchName/sales",isBranch, async (req, res) => {
+router.get("/:branchName/sales", async (req, res) => {
   try {
     const branchName = req.params.branchName;
     const branch = await Branch.findOne({
@@ -119,4 +130,4 @@ route.get("/:branchName/sales", async (req, res) => {
   }
 });
 
-module.exports = route;
+module.exports = router;

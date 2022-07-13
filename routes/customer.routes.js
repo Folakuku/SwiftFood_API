@@ -1,37 +1,10 @@
-const route = require("express").Router();
+const router = require("express").Router();
 const { Customer, Transaction, Meal } = require("../models");
 const { errorMsg, successMsg } = require("../utils/response");
-const { generateHashedPassword } = require("../utils/password");
 const { isLoggedIn } = require("../middlewares/checkAuth");
-const { CustomerSignupValidation } = require("../middlewares/validators");
-
-// Customer Registration
-route.post("/register", CustomerSignupValidation, async (req, res) => {
-  const { first_name, last_name, email, phone, password } = req.body;
-  try {
-    if (!first_name || !last_name || !email || !phone || !password) {
-      return errorMsg(
-        res,
-        "first_name,last_name,email,phone and password are required for registration"
-      );
-    }
-    const exist = await Customer.findOne({ where: { email } });
-    if (exist) {
-      return errorMsg(res, "Email has already been registered");
-    }
-    req.body.password = generateHashedPassword(password);
-    const customer = await Customer.create(req.body);
-    customer.set({ password: undefined });
-
-    successMsg(res, "Customer successfully registered", customer, 201);
-  } catch (error) {
-    console.log(error);
-    errorMsg(res, "UNKNOWN ERROR", 500, error.message);
-  }
-});
 
 // GET All Registered Customers By Admin
-route.get("/", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const customers = await Customer.findAll();
     for (const customer of customers) {
@@ -44,7 +17,7 @@ route.get("/", async (req, res) => {
 });
 
 // GET All Customer Transactions
-route.get("/transactions", isLoggedIn, async (req, res) => {
+router.get("/transactions", isLoggedIn, async (req, res) => {
   try {
     const customerId = req.user.id;
     const transactions = await Transaction.findAll({
@@ -60,4 +33,4 @@ route.get("/transactions", isLoggedIn, async (req, res) => {
   }
 });
 
-module.exports = route;
+module.exports = router;

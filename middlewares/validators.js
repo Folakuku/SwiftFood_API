@@ -35,7 +35,7 @@ const SigninValidation = (req, res, next) => {
 const BranchSignupValidation = (req, res, next) => {
   const schema = Joi.object({
     branchName: Joi.string().min(3).required(),
-    email: Joi.string().email().required(),
+    email: Joi.string().email().optional(),
     phone: Joi.string().required(),
     state: Joi.string().required(),
     city: Joi.string().required(),

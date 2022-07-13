@@ -1,11 +1,11 @@
-const route = require("express").Router();
+const router = require("express").Router();
 const { isBranch } = require("../middlewares/checkAuth");
 const { Meal } = require("../models");
 const { Branch } = require("../models");
-const { errorMsg } = require("../utils/response");
+const { errorMsg, successMsg } = require("../utils/response");
 
 //Add Meal
-route.post("/add", isBranch, async (req, res) => {
+router.post("/add", isBranch, async (req, res) => {
   try {
     let { name, price, discount, description, category, image } = req.body;
     if (!name || !price || !discount || !description || !category || !image) {
@@ -16,7 +16,6 @@ route.post("/add", isBranch, async (req, res) => {
       });
     }
 
-    const branch = req.user;
     req.body.branchId = req.user.id;
     req.body.brandName = req.user.brandName;
 
@@ -49,18 +48,41 @@ route.post("/add", isBranch, async (req, res) => {
 });
 
 // GET MENU FOR ALL MEALS
-route.get("/", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const meals = await Meal.findAll();
-    // const meals = await Meal.findAll({ include: "branch" });
-    // for (const meal of meals) {
-    //   meal.branch.set({ password: undefined });
-    // }
-    res.status(200).json({
-      status: true,
-      message: "Here are all meals",
-      data: meals,
-    });
+    const category = req.query.category;
+    if (category) {
+      const meals = await Meal.findAll({ where: { category } });
+      return successMsg(res, `Here are the meals in this category`, meals, 200);
+    } else {
+      // const meals = await Meal.findAll({ include: { model: Branch, where: { location } } });//find by location
+      const meals = await Meal.findAll();
+      // const meals = await Meal.findAll({ include: "branch" });
+      // for (const meal of meals) {
+      //   meal.branch.set({ password: undefined });
+      // }
+      res.status(200).json({
+        status: true,
+        message: "Here are all meals",
+        data: meals,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message);
+  }
+});
+
+// GET MENU BY CATEGORY
+router.get("/category", async (req, res) => {
+  try {
+    const category = req.query.category;
+    // const category = req.body.category;
+    const meals = await Meal.findAll({ where: { category } });
+
+    // Meal.findAll({ include: { model: Branch, where: { location } } });//findAll by location
+    // const meals = Meal.findAll({ where: { category } }); // By location
+    return successMsg(res, `Here are the meals in this category`, meals, 200);
   } catch (error) {
     console.log(error);
     errorMsg(res, "UNKNOWN ERROR", 500, error.message);
@@ -68,5 +90,6 @@ route.get("/", async (req, res) => {
 });
 
 // GET MENU BY LOCATION
+// await Meal.findAll({ include: { model: Branch, where: { location } } });//find
 
-module.exports = route;
+module.exports = router;
