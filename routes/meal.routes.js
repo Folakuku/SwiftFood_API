@@ -1,19 +1,34 @@
 const router = require("express").Router();
 const { isBranch } = require("../middlewares/checkAuth");
+const cloudinary = require("../config/cloudinary.config");
+const upload = require("../config/multer.config");
 const { Meal } = require("../models");
 const { Branch } = require("../models");
 const { errorMsg, successMsg } = require("../utils/response");
 
 //Add Meal
-router.post("/add", isBranch, async (req, res) => {
+router.post("/add", isBranch, upload.single("image"), async (req, res) => {
   try {
-    let { name, price, discount, description, category, image } = req.body;
-    if (!name || !price || !discount || !description || !category || !image) {
+    let { name, price, discount, description, category } = req.body;
+    if (!name || !price || !discount || !description || !category) {
       return res.status(400).json({
         status: false,
         message:
-          " Name, price, discount, description, category, image are all required",
+          " Name, price, discount, description, category are all required",
       });
+    }
+    try {
+      // ----------Setting Image----------
+      if (req.file) {
+        const result = await cloudinary.uploader.upload(req.file.path);
+        req.body.image = result.secure_url;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (!req.body.image) {
+      req.body.image = "image";
     }
 
     req.body.branchId = req.user.id;
