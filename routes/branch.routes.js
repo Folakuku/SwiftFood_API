@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { Vendor, Branch, Meal, SalesHistory } = require("../models");
 const { isVendor, isBranch } = require("../middlewares/checkAuth");
 const { generateHashedPassword } = require("../utils/password");
-const { errorMsg } = require("../utils/response");
+const { errorMsg, successMsg } = require("../utils/response");
 const { BranchSignupValidation } = require("../middlewares/validators");
 
 // Get Branches
@@ -127,6 +127,31 @@ router.get("/:branchName/sales", async (req, res) => {
   } catch (err) {
     console.log(err);
     return errorMsg(res, "UNKNOWN ERROR", 500, err.message);
+  }
+});
+
+// Delete Branch
+router.delete("/delete/:id", isVendor, async (req, res) => {
+  try {
+    const branch = await Branch.findOne({ where: { id: req.params.id } });
+    if (!branch) {
+      return errorMsg(res, "Branch Id unrecognized", 401);
+    }
+    if (branch.vendorId !== req.user.id) {
+      return errorMsg(res, "UNAUTHORIZED", 401);
+    }
+    const deleted = await Branch.destroy({ where: { id: req.params.id } });
+    if (deleted) {
+      return successMsg(res, "Branch account deleted", {});
+    } else if (!deleted) {
+      return errorMsg(
+        res,
+        `Branch with Id: "${req.params.id}" doesn't exist`,
+        400
+      );
+    }
+  } catch (error) {
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message);
   }
 });
 

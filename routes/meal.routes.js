@@ -92,4 +92,29 @@ router.get("/category", async (req, res) => {
 // GET MENU BY LOCATION
 // await Meal.findAll({ include: { model: Branch, where: { location } } });//find
 
+// Delete Meal
+router.delete("/delete/:id", isBranch, async (req, res) => {
+  try {
+    const meal = await Meal.findOne({ where: { id: req.params.id } });
+    if (!meal) {
+      return errorMsg(res, "Meal Id unrecognized", 401);
+    }
+    if (meal.branchId !== req.user.id) {
+      return errorMsg(res, "UNAUTHORIZED", 401);
+    }
+    const deleted = await meal.destroy({ where: { id: req.params.id } });
+    if (deleted) {
+      return successMsg(res, "Meal account deleted", {});
+    } else if (!deleted) {
+      return errorMsg(
+        res,
+        `Meal with Id: "${req.params.id}" doesn't exist`,
+        400
+      );
+    }
+  } catch (error) {
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message);
+  }
+});
+
 module.exports = router;

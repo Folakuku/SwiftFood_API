@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const morgan = require("morgan");
 require("dotenv").config();
 const app = express();
 const { sequelize } = require("./models");
@@ -17,6 +18,7 @@ const transactionRoutes = require("./routes/transaction.routes");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(morgan("dev"));
 app.use(cors());
 
 app.use("/api/v1/", mainRoutes);

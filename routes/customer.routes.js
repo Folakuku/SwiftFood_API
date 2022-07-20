@@ -33,4 +33,23 @@ router.get("/transactions", isLoggedIn, async (req, res) => {
   }
 });
 
+// Delete Customer
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const customer = await Customer.destroy({ where: { id: req.params.id } });
+    console.log(customer);
+    if (customer) {
+      return successMsg(res, "Customer account deleted", {});
+    } else if (!customer) {
+      return errorMsg(
+        res,
+        `Customer with Id: "${req.params.id}" doesn't exist`,
+        400
+      );
+    }
+  } catch (error) {
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message);
+  }
+});
+
 module.exports = router;

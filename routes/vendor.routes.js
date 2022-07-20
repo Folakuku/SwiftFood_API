@@ -2,6 +2,7 @@ const router = require("express").Router();
 const { isVendor } = require("../middlewares/checkAuth");
 const { Branch } = require("../models");
 const { Vendor } = require("../models");
+const { errorMsg, successMsg } = require("../utils/response");
 
 // Get All Vendors
 router.get("/", async (req, res) => {
@@ -57,5 +58,24 @@ router.get("/branches", isVendor, async (req, res) => {
 });
 
 // GET Sales Records Of Branches
+
+// Delete vendor
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const vendor = await Vendor.destroy({ where: { id: req.params.id } });
+    console.log(vendor);
+    if (vendor) {
+      return successMsg(res, "Vendor account deleted", {});
+    } else if (!vendor) {
+      return errorMsg(
+        res,
+        `Vendor with Id: "${req.params.id}" doesn't exist`,
+        400
+      );
+    }
+  } catch (error) {
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message);
+  }
+});
 
 module.exports = router;

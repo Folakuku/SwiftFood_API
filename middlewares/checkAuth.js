@@ -5,17 +5,13 @@ const { errorMsg } = require("../utils/response");
 const checkRole = (res, authHeader) => {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     console.log("no token");
-    return res.status(401).json({
-      status: false,
-      message: "No token provided",
-    });
+    return;
   }
   try {
     const token = authHeader.split(" ")[1];
     return verifyToken(token);
   } catch (error) {
-    console.log(error);
-    errorMsg(res, "UNKNOWN ERROR", 500, error.message);
+    return { error };
   }
 };
 
@@ -28,6 +24,12 @@ const isVendor = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     const payload = checkRole(res, authHeader);
+    if (!payload || !payload.role) {
+      return errorMsg(res, "Token Error", 401);
+    }
+    if (payload.error) {
+      return errorMsg(res, "Token Error", 401, payload.error);
+    }
     const role = payload.role;
     if (!role || role !== "vendor") {
       return res.status(401).json({
@@ -53,6 +55,12 @@ const isBranch = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     const payload = checkRole(res, authHeader);
+    if (!payload || !payload.role) {
+      return errorMsg(res, "Token Error", 401);
+    }
+    if (payload.error) {
+      return errorMsg(res, "Token Error", 401, payload.error);
+    }
     const role = payload.role;
     if (!role || role !== "branch") {
       return res.status(401).json({
@@ -61,6 +69,9 @@ const isBranch = async (req, res, next) => {
       });
     }
     const branch = await Branch.findOne({ where: { id: payload.id } });
+    if (!branch) {
+      return errorMsg(res, "UNAUTHORIZED", 401);
+    }
     branch.set({ password: undefined });
     req.user = branch;
     next();
