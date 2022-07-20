@@ -20,15 +20,19 @@ router.post("/add", isBranch, upload.single("image"), async (req, res) => {
     try {
       // ----------Setting Image----------
       if (req.file) {
-        const result = await cloudinary.uploader.upload(req.file.path);
+        const result = await cloudinary.uploader.upload(req.file.path, {
+          public_id: `${name}-image`,
+        });
         req.body.image = result.secure_url;
       }
     } catch (error) {
       console.log(error);
+      return errorMsg(res, "UNKNOWN ERROR", 500, error.message);
     }
 
     if (!req.body.image) {
-      req.body.image = "image";
+      req.body.image =
+        "https://res.cloudinary.com/swiftfoodsng/image/upload/v1658332209/tnfg41aceuao0e5oahso.png";
     }
 
     req.body.branchId = req.user.id;
@@ -52,7 +56,6 @@ router.post("/add", isBranch, upload.single("image"), async (req, res) => {
       message: "Meal Added to Menu",
       data: meal,
     });
-    console.log("Meal added");
   } catch (err) {
     console.log(err);
     return res.status(500).json({
@@ -106,6 +109,41 @@ router.get("/category", async (req, res) => {
 
 // GET MENU BY LOCATION
 // await Meal.findAll({ include: { model: Branch, where: { location } } });//find
+
+// UPDATE MENU
+router.put("/update/:id", isBranch, upload.single("image"), async (req, res) => {
+  try {
+    let meal = await Meal.findOne({ where: { id: req.params.id } });
+    if (req.user.id !== meal.branchId) {
+      return errorMsg(res, "UNAUTHORIZED", 401);
+    }
+    try {
+      // ----------Setting Image----------
+      if (req.file) {
+        const result = await cloudinary.uploader.upload(req.file.path, {
+          public_id: `${req.body.name || meal.name}-image`,
+        });
+        req.body.image = result.secure_url;
+      }
+    } catch (error) {
+      console.log("error");
+      console.log(error);
+      return errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
+    }
+
+    meal = await meal.set(req.body).save();
+
+    res.status(201).json({
+      status: true,
+      message: "Meal Updated",
+      data: meal,
+    });
+  } catch (err) {
+    console.log("err");
+    console.log(err);
+    return errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
+  }
+});
 
 // Delete Meal
 router.delete("/delete/:id", isBranch, async (req, res) => {
