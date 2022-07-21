@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const { isVendor } = require("../middlewares/checkAuth");
+const cloudinary = require("../config/cloudinary.config");
+const upload = require("../config/multer.config");
 const { Branch } = require("../models");
 const { Vendor } = require("../models");
 const { errorMsg, successMsg } = require("../utils/response");
@@ -9,7 +11,7 @@ router.get("/", async (req, res) => {
   try {
     const vendors = await Vendor.findAll();
     vendors.forEach((vendor) => {
-      vendor.set({ password: "" });
+      vendor.set({ password: undefined });
     });
     if (vendors.length < 1) {
       console.log("There are no vendors");
@@ -58,6 +60,41 @@ router.get("/branches", isVendor, async (req, res) => {
 });
 
 // GET Sales Records Of Branches
+
+// UPDATE Vendors
+router.put("/update/:id", isVendor, upload.single("image"), async (req, res) => {
+  try {
+    let vendor = await Vendor.findOne({ where: { id: req.params.id } });
+    if (req.user.id != req.params.id) {
+      return errorMsg(res, "UNAUTHORIZED", 401);
+    }
+    try {
+      // ----------Setting Image----------
+      if (req.file) {
+        const result = await cloudinary.uploader.upload(req.file.path, {
+          public_id: `${req.body.name || vendor.brandName}-image`,
+        });
+        req.body.image = result.secure_url;
+      }
+    } catch (error) {
+      console.log("error");
+      console.log(error);
+      return errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
+    }
+
+    vendor = await vendor.set(req.body).save();
+    vendor.set({ password: undefined });
+
+    res.status(200).json({
+      status: true,
+      message: "Vendor updated",
+      data: vendor,
+    });
+  } catch (error) {
+    console.log(error);
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
+  }
+});
 
 // Delete vendor
 router.delete("/delete/:id", async (req, res) => {

@@ -195,7 +195,7 @@ router.post("/vendors/register", VendorSignupValidation, async (req, res) => {
     req.body.password = generateHashedPassword(password);
     const vendor = await Vendor.create(req.body);
     const token = generateToken(vendor.id, "vendor");
-    vendor.set({ password: "" });
+    vendor.set({ password: undefined });
 
     res.status(201).json({
       status: true,

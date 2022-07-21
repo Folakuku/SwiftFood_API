@@ -80,7 +80,7 @@ router.post("/register", isVendor, BranchSignupValidation, async (req, res) => {
     res.status(201).json({
       status: true,
       message: "Branch Registered",
-      data: branch.toJSON(),
+      data: branch,
     });
     console.log("branch registered");
   } catch (err) {
@@ -101,7 +101,7 @@ router.get("/:branchName/menu", async (req, res) => {
     res.status(200).json({
       status: true,
       message: "This is the branch with it's menu ",
-      data: branch.toJSON(),
+      data: branch,
     });
   } catch (err) {
     console.log(err);
