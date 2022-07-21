@@ -55,12 +55,13 @@ router.post(
       req.body.password = generateHashedPassword(password);
       const branch = await Branch.create(req.body);
       const branchId = branch.id;
+      const token = generateToken(branch.id, "branch");
       branch.set({ password: undefined });
       const salesHistory = await SalesHistory.create({ branchId });
       res.status(201).json({
         status: true,
         message: "Branch Registered",
-        data: branch.toJSON(),
+        data: { branch, token },
       });
       console.log("branch registered");
     } catch (err) {
@@ -125,9 +126,15 @@ router.post(
       }
       req.body.password = generateHashedPassword(password);
       const customer = await Customer.create(req.body);
+      const token = generateToken(customer.id, "customer");
       customer.set({ password: undefined });
 
-      successMsg(res, "Customer successfully registered", customer, 201);
+      successMsg(
+        res,
+        "Customer successfully registered",
+        { customer, token },
+        201
+      );
     } catch (error) {
       console.log(error);
       errorMsg(res, "UNKNOWN ERROR", 500, error.message);
@@ -187,12 +194,13 @@ router.post("/vendors/register", VendorSignupValidation, async (req, res) => {
 
     req.body.password = generateHashedPassword(password);
     const vendor = await Vendor.create(req.body);
+    const token = generateToken(vendor.id, "vendor");
     vendor.set({ password: "" });
 
     res.status(201).json({
       status: true,
       message: "Vendor Registered",
-      data: vendor.toJSON(),
+      data: { vendor, token },
     });
   } catch (err) {
     console.log(err);
