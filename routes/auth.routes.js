@@ -69,34 +69,24 @@ router.post("/branches/login", BranchSigninValidation, async (req, res) => {
   try {
     const { branchName, password } = req.body;
     if (!branchName || !password) {
-      return res
-        .status(400)
-        .json({ status: false, message: "branchName and password is required" });
+      return errorMsg(res, "branchName and password is required", 400);
     }
     const branch = await Branch.findOne({ where: { branchName } });
     if (!branch) {
-      return res
-        .status(400)
-        .json({ status: false, message: "branch not registered" });
+      return errorMsg(res, "branch not registered", 400);
     }
 
     const valid = comparePassword(password, branch.password);
     if (!valid) {
-      return res
-        .status(400)
-        .json({ status: false, message: "Password incorrect" });
+      return errorMsg(res, "Password incorrect", 400);
     }
 
     const token = generateToken(branch.id, "branch");
     branch.set({ password: "" });
-    res.json({
-      status: true,
-      message: "Login Successful",
-      data: { token, branch },
-    });
+    successMsg(res, "Login Successful", { branch, token });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ status: false, message: "UNKNOWN ERROR" });
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
   }
 });
 

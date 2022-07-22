@@ -14,6 +14,7 @@ const authRoutes = require("./routes/auth.routes");
 const orderRoutes = require("./routes/order.routes");
 const salesRoutes = require("./routes/salesHistory.routes");
 const transactionRoutes = require("./routes/transaction.routes");
+const { errorMsg } = require("./utils/response");
 
 // require("./db/db.relationships");
 
@@ -32,10 +33,7 @@ app.use("/api/v1/sales", salesRoutes);
 app.use("/api/v1/transactions", transactionRoutes);
 app.use("/api/v1/vendors", vendorRoutes);
 app.all("*", (req, res) => {
-  res.status(404).json({
-    status: false,
-    error: "And Just Like That, You Completely Lost Your Way 😥",
-  });
+  errorMsg(res, "And Just Like That, You Completely Lost Your Way 😥", 404);
 });
 
 const PORT = process.env.PORT || 5000;
