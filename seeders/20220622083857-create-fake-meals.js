@@ -3,7 +3,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
-      "Meals",
+      "meals",
       [
         {
           name: "pizza",
@@ -85,7 +85,7 @@ module.exports = {
           image:
             "https://res.cloudinary.com/swiftfoodsng/image/upload/v1658340324/s6pmvtrbupr9v7v2sogj.png",
           status: "available",
-          branchId: 3,
+          branchId: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -95,6 +95,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("Meals", null, {});
+    await queryInterface.bulkDelete("meals", null, {});
   },
 };
