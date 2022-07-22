@@ -16,6 +16,11 @@ router.get("/", async (req, res) => {
         where: { state, city },
         include: "vendor",
       });
+    } else if (state) {
+      branches = await Branch.findAll({
+        where: { state },
+        include: "vendor",
+      });
     } else {
       branches = await Branch.findAll({ include: "vendor" });
     }
@@ -97,6 +102,9 @@ router.get("/:branchName/menu", async (req, res) => {
       where: { branchName },
       include: "meals",
     });
+    if (!branch) {
+      return errorMsg(res, `${branchName} is not a registered branch`, 400);
+    }
     branch.set({ password: undefined });
     res.status(200).json({
       status: true,

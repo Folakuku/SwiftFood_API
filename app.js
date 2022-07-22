@@ -4,6 +4,7 @@ const morgan = require("morgan");
 require("dotenv").config();
 const app = express();
 const { sequelize } = require("./models");
+// const { sequelize } = require("./db/db.config");
 const mainRoutes = require("./routes/main.routes");
 const vendorRoutes = require("./routes/vendor.routes");
 const branchRoutes = require("./routes/branch.routes");

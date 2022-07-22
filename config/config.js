@@ -6,6 +6,7 @@ const {
   DB_NAME,
   DB_HOST,
   DIALECT,
+  DB_PORT,
   DB_USERNAME_P,
   DB_PASSWORD_P,
   DB_NAME_P,
@@ -19,20 +20,35 @@ module.exports = {
     password: DB_PASSWORD,
     database: DB_NAME,
     host: DB_HOST,
+    port: DB_PORT,
     dialect: DIALECT,
   },
   test: {
-    username: DB_USERNAME,
-    password: DB_PASSWORD,
-    database: DB_NAME,
-    host: DB_HOST,
-    dialect: DIALECT,
+    username: DB_USERNAME_P,
+    password: DB_PASSWORD_P,
+    database: DB_NAME_P,
+    host: DB_HOST_P,
+    port: DB_PORT,
+    dialect: DIALECT_P,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
   },
   production: {
     username: DB_USERNAME_P,
     password: DB_PASSWORD_P,
     database: DB_NAME_P,
     host: DB_HOST_P,
+    port: DB_PORT,
     dialect: DIALECT_P,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
   },
 };
