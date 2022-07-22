@@ -21,18 +21,15 @@ router.post(
     try {
       let { branchName, email, phone, state, city, password } = req.body;
       if (!branchName || !phone || !state || !city || !password) {
-        return res.status(400).json({
-          status: false,
-          message:
-            " branchName, phone, state, city, password are all required for registration",
-        });
+        return errorMsg(
+          res,
+          " branchName, phone, state, city, password are all required for registration",
+          400
+        );
       }
 
       if (password.length < 6) {
-        return res.status(400).json({
-          status: false,
-          message: "Password must have at least 6 characters",
-        });
+        return errorMsg(res, "Password must have at least 6 characters", 400);
       }
       const vendor = req.user;
 
@@ -45,10 +42,11 @@ router.post(
       });
 
       if (exist.length > 0) {
-        return res.status(400).json({
-          status: false,
-          message: "A branch is already registered with this name",
-        });
+        return errorMsg(
+          res,
+          "A branch is already registered with this name",
+          400
+        );
       }
       req.body.vendorId = vendor.id;
       req.body.brandName = vendor.brandName;
@@ -58,15 +56,10 @@ router.post(
       const token = generateToken(branch.id, "branch");
       branch.set({ password: undefined });
       const salesHistory = await SalesHistory.create({ branchId });
-      res.status(201).json({
-        status: true,
-        message: "Branch Registered",
-        data: { branch, token },
-      });
-      console.log("branch registered");
+      successMsg(res, "Branch Registered", { branch, token }, 201);
     } catch (err) {
       console.log(err);
-      return errorMsg(res, "UNKNOWN ERROR", 500, err.message);
+      return errorMsg(res, "UNKNOWN ERROR", 500, err.message || err);
     }
   }
 );

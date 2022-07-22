@@ -10,12 +10,15 @@ const { errorMsg, successMsg } = require("../utils/response");
 router.post("/add", isBranch, upload.single("image"), async (req, res) => {
   try {
     let { name, price, discount, description, category } = req.body;
-    if (!name || !price || !discount || !description || !category) {
+    if (!name || !price || !description || !category) {
       return res.status(400).json({
         status: false,
         message:
           " Name, price, discount, description, category are all required",
       });
+    }
+    if (!req.body.sellingPrice) {
+      req.body.sellingPrice = price;
     }
     try {
       // ----------Setting Image----------

@@ -12,9 +12,9 @@ module.exports = {
       name: { type: Sequelize.STRING, allowNull: false },
       brandName: { type: Sequelize.STRING, allowNull: false },
       price: { type: Sequelize.FLOAT, allowNull: false },
-      discount: { type: Sequelize.FLOAT, allowNull: false },
+      sellingPrice: { type: Sequelize.FLOAT, allowNull: false },
       description: { type: Sequelize.TEXT, allowNull: false },
-      category: { type: Sequelize.STRING, allowNull: false },
+      category: { type: Sequelize.ARRAY(Sequelize.STRING), allowNull: false },
       image: { type: Sequelize.STRING, allowNull: false },
       status: {
         type: Sequelize.ENUM("available", "unavailable"),

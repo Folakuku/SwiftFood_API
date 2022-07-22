@@ -9,7 +9,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      rating: { type: Sequelize.TINYINT, allowNull: false },
+      rating: { type: Sequelize.SMALLINT, allowNull: false },
       review: { type: Sequelize.TEXT },
       createdAt: { allowNull: false, type: Sequelize.DATE },
       updatedAt: { allowNull: false, type: Sequelize.DATE },

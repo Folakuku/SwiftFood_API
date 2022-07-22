@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
 
   BranchRating.init(
     {
-      rating: { type: DataTypes.TINYINT, allowNull: false },
+      rating: { type: DataTypes.SMALLINT, allowNull: false },
       review: { type: DataTypes.TEXT },
     },
     {

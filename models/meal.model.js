@@ -24,9 +24,9 @@ module.exports = (sequelize, DataTypes) => {
       name: { type: DataTypes.STRING, allowNull: false },
       brandName: { type: DataTypes.STRING, allowNull: false },
       price: { type: DataTypes.FLOAT, allowNull: false },
-      discount: { type: DataTypes.FLOAT, allowNull: false },
+      sellingPrice: { type: DataTypes.FLOAT, allowNull: false },
       description: { type: DataTypes.TEXT, allowNull: false },
-      category: { type: DataTypes.STRING, allowNull: false },
+      category: { type: DataTypes.ARRAY(DataTypes.STRING), allowNull: false },
       image: { type: DataTypes.STRING, allowNull: false },
       status: {
         type: DataTypes.ENUM("available", "unavailable"),

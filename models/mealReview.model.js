@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      rating: { type: DataTypes.TINYINT, allowNull: false },
+      rating: { type: DataTypes.SMALLINT, allowNull: false },
       review: { type: DataTypes.TEXT },
     },
     {
