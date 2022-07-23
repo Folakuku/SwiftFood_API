@@ -54,14 +54,13 @@ router.post("/add", isBranch, upload.single("image"), async (req, res) => {
       });
     }
     if (typeof category != Array) {
-      catArray = category.split(" ");
-      category = catArray;
+      category = category.split(" ");
     }
     let meal = await Meal.create(input);
     await sequelize.query(
       `UPDATE meals SET category = '{${category}}' WHERE id= ${meal.id}`
     );
-    meal.set({ category: `${category}` });
+    meal.set({ category: category });
     successMsg(res, "Meal Added to Menu", meal, 201);
   } catch (error) {
     console.log(error);
@@ -103,36 +102,41 @@ router.get("/", async (req, res) => {
 // UPDATE MENU
 router.put("/update/:id", isBranch, upload.single("image"), async (req, res) => {
   try {
-    let input = req.body;
-    let cat = ["odd", "even"];
-    const { category, ...change } = input;
-    console.log("category=====", category);
-    console.log("category=====", cat);
-    successMsg(res, "message", change);
-    // let meal = await Meal.findOne({ where: { id: req.params.id } });
-    // // if (req.user.id !== meal.branchId) {
-    // //   return errorMsg(res, "UNAUTHORIZED", 401);
-    // // }
-    // try {
-    //   // ----------Setting Image----------
-    //   if (req.file) {
-    //     const result = await cloudinary.uploader.upload(req.file.path, {
-    //       public_id: `${req.body.name || meal.name}-image`,
-    //     });
-    //     req.body.image = result.secure_url;
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    //   return errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
+    let { category, ...change } = req.body;
+    let meal = await Meal.findOne({ where: { id: req.params.id } });
+    // if (req.user.id !== meal.branchId) {
+    //   return errorMsg(res, "UNAUTHORIZED", 401);
     // }
+    try {
+      // ----------Setting Image----------
+      if (req.file) {
+        const result = await cloudinary.uploader.upload(req.file.path, {
+          public_id: `${change.name || meal.name}-image`,
+        });
+        change.image = result.secure_url;
+      }
+    } catch (error) {
+      console.log(error);
+      return errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
+    }
 
-    // meal = await meal.set(req.body).save();
-
-    // res.status(201).json({
-    //   status: true,
-    //   message: "Meal Updated",
-    //   data: meal,
-    // });
+    meal = await meal.set(change);
+    if (category) {
+      if (typeof category != Array) {
+        category = category.split(" ");
+      }
+      await sequelize.query(
+        `UPDATE meals SET category = '{${category}}' WHERE id= ${meal.id}`
+      );
+    }
+    meal = await meal.save();
+    if (category) meal.set({ category: category });
+    console.log(typeof change.price);
+    res.status(201).json({
+      status: true,
+      message: "Meal Updated",
+      data: meal,
+    });
   } catch (error) {
     console.log(error);
     return errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
@@ -146,9 +150,9 @@ router.delete("/delete/:id", isBranch, async (req, res) => {
     if (!meal) {
       return errorMsg(res, "Meal Id unrecognized", 401);
     }
-    // if (meal.branchId !== req.user.id) {
-    //   return errorMsg(res, "UNAUTHORIZED", 401);
-    // }
+    if (meal.branchId !== req.user.id) {
+      return errorMsg(res, "UNAUTHORIZED", 401);
+    }
     const deleted = await meal.destroy({ where: { id: req.params.id } });
     if (deleted) {
       return successMsg(res, "Meal deleted", {});
