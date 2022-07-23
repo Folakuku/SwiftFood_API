@@ -5,20 +5,22 @@ const upload = require("../config/multer.config");
 const { Meal } = require("../models");
 const { Branch } = require("../models");
 const { errorMsg, successMsg } = require("../utils/response");
+const { Op } = require("sequelize");
+const { sequelize } = require("../models");
 
 //Add Meal
 router.post("/add", isBranch, upload.single("image"), async (req, res) => {
   try {
-    let { name, price, discount, description, category } = req.body;
+    let { category, ...input } = req.body;
+    let { name, price, description } = input;
     if (!name || !price || !description || !category) {
       return res.status(400).json({
         status: false,
-        message:
-          " Name, price, discount, description, category are all required",
+        message: " Name, price, description, category are all required",
       });
     }
-    if (!req.body.sellingPrice) {
-      req.body.sellingPrice = price;
+    if (!input.sellingPrice) {
+      input.sellingPrice = price;
     }
     try {
       // ----------Setting Image----------
@@ -26,23 +28,23 @@ router.post("/add", isBranch, upload.single("image"), async (req, res) => {
         const result = await cloudinary.uploader.upload(req.file.path, {
           public_id: `${name}-image`,
         });
-        req.body.image = result.secure_url;
+        input.image = result.secure_url;
       }
     } catch (error) {
       console.log(error);
-      return errorMsg(res, "UNKNOWN ERROR", 500, error.message);
+      return errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
     }
 
-    if (!req.body.image) {
-      req.body.image =
+    if (!input.image) {
+      input.image =
         "https://res.cloudinary.com/swiftfoodsng/image/upload/v1658332209/tnfg41aceuao0e5oahso.png";
     }
 
-    req.body.branchId = req.user.id;
-    req.body.brandName = req.user.brandName;
+    input.branchId = req.user.id;
+    input.brandName = req.user.brandName;
 
     const exist = await Meal.findAll({
-      where: { name, brandName: req.body.brandName },
+      where: { name, brandName: input.brandName },
     });
 
     if (exist.length > 0) {
@@ -51,20 +53,18 @@ router.post("/add", isBranch, upload.single("image"), async (req, res) => {
         message: "A meal is already registered with this name on your menu",
       });
     }
-
-    const meal = await Meal.create(req.body);
-
-    res.status(201).json({
-      status: true,
-      message: "Meal Added to Menu",
-      data: meal,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({
-      status: false,
-      message: "UNKNOWN ERROR",
-    });
+    if (typeof category != Array) {
+      category = category.split(" ");
+    }
+    let meal = await Meal.create(input);
+    await sequelize.query(
+      `UPDATE meals SET category = '{${category}}' WHERE id= ${meal.id}`
+    );
+    meal.set({ category: category });
+    successMsg(res, "Meal Added to Menu", meal, 201);
+  } catch (error) {
+    console.log(error);
+    return errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
   }
 });
 
@@ -73,7 +73,9 @@ router.get("/", async (req, res) => {
   try {
     const category = req.query.category;
     if (category) {
-      const meals = await Meal.findAll({ where: { category } });
+      const meals = await Meal.findAll({
+        where: { category: { [Op.contains]: [category] } },
+      });
       return successMsg(res, `Here are the meals in this category`, meals, 200);
     } else {
       // const meals = await Meal.findAll({ include: { model: Branch, where: { location } } });//find by location
@@ -90,23 +92,7 @@ router.get("/", async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    errorMsg(res, "UNKNOWN ERROR", 500, error.message);
-  }
-});
-
-// GET MENU BY CATEGORY
-router.get("/category", async (req, res) => {
-  try {
-    const category = req.query.category;
-    // const category = req.body.category;
-    const meals = await Meal.findAll({ where: { category } });
-
-    // Meal.findAll({ include: { model: Branch, where: { location } } });//findAll by location
-    // const meals = Meal.findAll({ where: { category } }); // By location
-    return successMsg(res, `Here are the meals in this category`, meals, 200);
-  } catch (error) {
-    console.log(error);
-    errorMsg(res, "UNKNOWN ERROR", 500, error.message);
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
   }
 });
 
@@ -116,33 +102,43 @@ router.get("/category", async (req, res) => {
 // UPDATE MENU
 router.put("/update/:id", isBranch, upload.single("image"), async (req, res) => {
   try {
+    let { category, ...change } = req.body;
     let meal = await Meal.findOne({ where: { id: req.params.id } });
-    if (req.user.id !== meal.branchId) {
-      return errorMsg(res, "UNAUTHORIZED", 401);
-    }
+    // if (req.user.id !== meal.branchId) {
+    //   return errorMsg(res, "UNAUTHORIZED", 401);
+    // }
     try {
       // ----------Setting Image----------
       if (req.file) {
         const result = await cloudinary.uploader.upload(req.file.path, {
-          public_id: `${req.body.name || meal.name}-image`,
+          public_id: `${change.name || meal.name}-image`,
         });
-        req.body.image = result.secure_url;
+        change.image = result.secure_url;
       }
     } catch (error) {
       console.log(error);
       return errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
     }
 
-    meal = await meal.set(req.body).save();
-
+    meal = await meal.set(change);
+    if (category) {
+      if (typeof category != Array) {
+        category = category.split(" ");
+      }
+      await sequelize.query(
+        `UPDATE meals SET category = '{${category}}' WHERE id= ${meal.id}`
+      );
+    }
+    meal = await meal.save();
+    if (category) meal.set({ category: category });
+    console.log(typeof change.price);
     res.status(201).json({
       status: true,
       message: "Meal Updated",
       data: meal,
     });
-  } catch (err) {
-    console.log("err");
-    console.log(err);
+  } catch (error) {
+    console.log(error);
     return errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
   }
 });
@@ -159,7 +155,7 @@ router.delete("/delete/:id", isBranch, async (req, res) => {
     }
     const deleted = await meal.destroy({ where: { id: req.params.id } });
     if (deleted) {
-      return successMsg(res, "Meal account deleted", {});
+      return successMsg(res, "Meal deleted", {});
     } else if (!deleted) {
       return errorMsg(
         res,
@@ -168,7 +164,7 @@ router.delete("/delete/:id", isBranch, async (req, res) => {
       );
     }
   } catch (error) {
-    errorMsg(res, "UNKNOWN ERROR", 500, error.message);
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
   }
 });
 
