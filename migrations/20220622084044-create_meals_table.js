@@ -14,7 +14,7 @@ module.exports = {
       price: { type: Sequelize.FLOAT, allowNull: false },
       sellingPrice: { type: Sequelize.FLOAT, allowNull: false },
       description: { type: Sequelize.TEXT, allowNull: false },
-      category: { type: Sequelize.ARRAY(Sequelize.STRING), allowNull: false },
+      category: { type: Sequelize.ARRAY(Sequelize.STRING) },
       image: { type: Sequelize.STRING, allowNull: false },
       status: {
         type: Sequelize.ENUM("available", "unavailable"),

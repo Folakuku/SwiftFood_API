@@ -11,7 +11,7 @@ module.exports = {
           price: 3000,
           sellingPrice: 2500,
           description: "Simple and sweet",
-          category: ["snack"],
+          category: ["snacks"],
           image:
             "https://res.cloudinary.com/swiftfoodsng/image/upload/v1658411229/pizza-image.jpg",
           status: "available",
@@ -25,7 +25,7 @@ module.exports = {
           price: 2000,
           sellingPrice: 2000,
           description: "Simple and sweet",
-          category: ["snack"],
+          category: ["snacks"],
           image:
             "https://res.cloudinary.com/swiftfoodsng/image/upload/v1658342973/baked%20chicken-image.png",
           status: "available",
@@ -53,7 +53,7 @@ module.exports = {
           price: 2500,
           sellingPrice: 2500,
           description: "Simple and sweet",
-          category: ["snack"],
+          category: ["snacks"],
           image:
             "https://res.cloudinary.com/swiftfoodsng/image/upload/v1658343219/chips-image.png",
           status: "unavailable",
@@ -81,7 +81,7 @@ module.exports = {
           price: 2000,
           sellingPrice: 2000,
           description: "Simple and sweet",
-          category: ["snack"],
+          category: ["snacks"],
           image:
             "https://res.cloudinary.com/swiftfoodsng/image/upload/v1658340324/s6pmvtrbupr9v7v2sogj.png",
           status: "available",
