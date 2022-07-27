@@ -2,8 +2,7 @@ const router = require("express").Router();
 const { isVendor } = require("../middlewares/checkAuth");
 const cloudinary = require("../config/cloudinary.config");
 const upload = require("../config/multer.config");
-const { Branch } = require("../models");
-const { Vendor } = require("../models");
+const { Branch, Vendor } = require("../models");
 const { errorMsg, successMsg } = require("../utils/response");
 
 // Get All Vendors
@@ -56,6 +55,24 @@ router.get("/branches", isVendor, async (req, res) => {
       status: false,
       message: "UNKNOWN ERROR",
     });
+  }
+});
+
+// GET Menu of Branches of Vendor
+router.get("/:id/menu", async (req, res) => {
+  try {
+    // save location as a global var and filter
+    const branches = await Branch.findAll({
+      where: { vendorId: req.params.id },
+      include: "meals",
+    });
+    branches.forEach((branch) => {
+      branch.set({ password: undefined });
+    });
+    successMsg(res, "These are the meals under this vendor", branches);
+  } catch (error) {
+    console.log(error);
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
   }
 });
 

@@ -49,6 +49,9 @@ router.post(
         );
       }
       req.body.vendorId = vendor.id;
+      req.body.branchName = branchName.toLowerCase();
+      req.body.state = state.toLowerCase();
+      req.body.city = city.toLowerCase();
       req.body.brandName = vendor.brandName;
       req.body.password = generateHashedPassword(password);
       const branch = await Branch.create(req.body);
@@ -175,6 +178,7 @@ router.post("/vendors/register", VendorSignupValidation, async (req, res) => {
       });
     }
 
+    req.body.brandName = brandName.toLowerCase();
     req.body.password = generateHashedPassword(password);
     const vendor = await Vendor.create(req.body);
     const token = generateToken(vendor.id, "vendor");
