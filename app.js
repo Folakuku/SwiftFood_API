@@ -3,8 +3,9 @@ const cors = require("cors");
 const morgan = require("morgan");
 require("dotenv").config();
 const app = express();
-const { sequelize } = require("./models");
-// const { sequelize } = require("./db/db.config");
+// const { sequelize } = require("./models");
+const { sequelize } = require("./db/db.config");
+require("./db/db.relationships");
 const mainRoutes = require("./routes/main.routes");
 const vendorRoutes = require("./routes/vendor.routes");
 const branchRoutes = require("./routes/branch.routes");
@@ -15,8 +16,6 @@ const orderRoutes = require("./routes/order.routes");
 const salesRoutes = require("./routes/salesHistory.routes");
 const transactionRoutes = require("./routes/transaction.routes");
 const { errorMsg } = require("./utils/response");
-
-// require("./db/db.relationships");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

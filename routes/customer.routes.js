@@ -1,7 +1,8 @@
 const router = require("express").Router();
-const { Customer, Transaction, Meal } = require("../models");
 const { errorMsg, successMsg } = require("../utils/response");
 const { isLoggedIn } = require("../middlewares/checkAuth");
+const { Transaction } = require("../models/transaction.model");
+const { Customer } = require("../models/customer.model");
 
 // GET All Registered Customers By Admin
 router.get("/", async (req, res) => {

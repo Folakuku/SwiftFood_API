@@ -2,8 +2,9 @@ const router = require("express").Router();
 const { isVendor } = require("../middlewares/checkAuth");
 const cloudinary = require("../config/cloudinary.config");
 const upload = require("../config/multer.config");
-const { Branch, Vendor } = require("../models");
 const { errorMsg, successMsg } = require("../utils/response");
+const { Vendor } = require("../models/vendor.model");
+const { Branch } = require("../models/branch.model");
 
 // Get All Vendors
 router.get("/", async (req, res) => {

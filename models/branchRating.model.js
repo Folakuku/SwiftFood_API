@@ -1,18 +1,16 @@
-"use strict";
-const { Model } = require("sequelize");
-module.exports = (sequelize, DataTypes) => {
-  class BranchRating extends Model {}
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../db/db.config");
 
-  BranchRating.init(
-    {
-      rating: { type: DataTypes.SMALLINT, allowNull: false },
-      review: { type: DataTypes.TEXT },
-    },
-    {
-      sequelize,
-      tableName: "branchRatings",
-      modelName: "BranchRating",
-    }
-  );
-  return BranchRating;
-};
+const BranchRating = sequelize.define(
+  "branch_rating",
+  {
+    rating: { type: DataTypes.SMALLINT, allowNull: false },
+    review: { type: DataTypes.TEXT },
+  },
+  {
+    sequelize,
+    tableName: "branchRatings",
+    modelName: "BranchRating",
+  }
+);
+module.exports = { BranchRating };

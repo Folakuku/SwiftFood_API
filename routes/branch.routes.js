@@ -1,9 +1,10 @@
 const router = require("express").Router();
-const { Vendor, Branch, Meal, SalesHistory } = require("../models");
 const { isVendor, isBranch } = require("../middlewares/checkAuth");
 const { generateHashedPassword } = require("../utils/password");
 const { errorMsg, successMsg } = require("../utils/response");
 const { BranchSignupValidation } = require("../middlewares/validators");
+const { Branch } = require("../models/branch.model");
+const { SalesHistory } = require("../models/salesHistory.model");
 
 // Get Branches
 router.get("/", async (req, res) => {
@@ -118,7 +119,26 @@ router.get("/:branchName/menu", async (req, res) => {
 });
 
 // Get Branch Sales
-// router.get("/:branchName/sales",isBranch, async (req, res) => {
+// router.get("/:id/sales",isBranch, async (req, res) => {
+router.get("/:id/sales", async (req, res) => {
+  try {
+    const branchId = req.params.id;
+    const sales = await SalesHistory.findOne({
+      where: { branchId },
+      include: "orders",
+    });
+    res.status(200).json({
+      status: true,
+      message: "This is the sales record of this branch",
+      data: sales,
+    });
+  } catch (err) {
+    console.log(err);
+    return errorMsg(res, "UNKNOWN ERROR", 500, err.message);
+  }
+});
+
+// GET Branch Sales by branchName
 router.get("/:branchName/sales", async (req, res) => {
   try {
     const branchName = req.params.branchName;

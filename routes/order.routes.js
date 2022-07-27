@@ -1,6 +1,7 @@
 const router = require("express").Router();
-const { Order, Transaction, SalesHistory } = require("../models");
 const { isLoggedIn } = require("../middlewares/checkAuth");
+const { Order } = require("../models/order.model");
+const { Transaction } = require("../models/transaction.model");
 const { errorMsg, successMsg } = require("../utils/response");
 
 // Make Order
@@ -19,6 +20,7 @@ router.post("/", isLoggedIn, async (req, res) => {
         meal.discount = 0;
       }
       const order = await Order.create({
+        name: meal.name,
         mealId: meal.mealId,
         transactionId: transaction.id,
         salesId: meal.branchId,

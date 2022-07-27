@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const { Vendor, Branch, Customer, SalesHistory } = require("../models");
 const { generateToken } = require("../utils/token");
 const { comparePassword, generateHashedPassword } = require("../utils/password");
 const { errorMsg, successMsg } = require("../utils/response");
@@ -11,6 +10,10 @@ const {
   VendorSignupValidation,
 } = require("../middlewares/validators");
 const { isVendor, isBranch } = require("../middlewares/checkAuth");
+const { Branch } = require("../models/branch.model");
+const { SalesHistory } = require("../models/salesHistory.model");
+const { Customer } = require("../models/customer.model");
+const { Vendor } = require("../models/vendor.model");
 
 // Branch Registration By Vendor
 router.post(
