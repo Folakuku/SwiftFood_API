@@ -80,7 +80,7 @@ router.post("/register", isVendor, BranchSignupValidation, async (req, res) => {
     const branch = await Branch.create(req.body);
     const branchId = branch.id;
     branch.set({ password: undefined });
-    const salesHistory = await SalesHistory.create({ branchId });
+    const salesHistory = await SalesHistory.create({ id: branchId, branchId });
 
     res.status(201).json({
       status: true,
