@@ -77,7 +77,6 @@ router.put("/update/:id", isVendor, upload.single("image"), async (req, res) => 
         req.body.image = result.secure_url;
       }
     } catch (error) {
-      console.log("error");
       console.log(error);
       return errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
     }
