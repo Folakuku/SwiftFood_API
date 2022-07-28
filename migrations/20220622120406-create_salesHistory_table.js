@@ -9,7 +9,17 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      branchId: { type: Sequelize.INTEGER, allowNull: false },
+      branchId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+        references: {
+          model: "branches",
+          key: "id",
+          as: "branchId",
+        },
+      },
       createdAt: { allowNull: false, type: Sequelize.DATE },
       updatedAt: { allowNull: false, type: Sequelize.DATE },
     });

@@ -1,10 +1,11 @@
 const router = require("express").Router();
-const { isVendor, isBranch } = require("../middlewares/checkAuth");
+const { isVendor, isBranch, isLoggedIn } = require("../middlewares/checkAuth");
 const { generateHashedPassword } = require("../utils/password");
 const { errorMsg, successMsg } = require("../utils/response");
 const { BranchSignupValidation } = require("../middlewares/validators");
 const { Branch } = require("../models/branch.model");
 const { SalesHistory } = require("../models/salesHistory.model");
+const { BranchRating } = require("../models/branchRating.model");
 
 // Get Branches
 router.get("/", async (req, res) => {

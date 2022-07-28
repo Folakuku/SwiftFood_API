@@ -1,21 +1,13 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../db/db.config");
 
-const SalesHistory = sequelize.define(
-  "sales_history",
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    branchId: { type: DataTypes.INTEGER, allowNull: false },
+const SalesHistory = sequelize.define("sales_history", {
+  id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
   },
-  {
-    sequelize,
-    modelName: "SalesHistory",
-    tableName: "salesHistories",
-  }
-);
+  branchId: { type: DataTypes.INTEGER, allowNull: false },
+});
 module.exports = { SalesHistory };

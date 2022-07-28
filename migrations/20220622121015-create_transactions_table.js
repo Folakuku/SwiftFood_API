@@ -9,17 +9,22 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      // date: {
-      //   type: Sequelize.DATE,
-      //   defaultValue: Sequelize.NOW,
-      //   allowNull: false,
-      // },
       total: { type: Sequelize.FLOAT, allowNull: false },
       status: {
         type: Sequelize.ENUM("pending", "successful", "cancelled"),
         defaultValue: "pending",
       },
-      customerId: { type: Sequelize.INTEGER, allowNull: false },
+      customerId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+        references: {
+          model: "customers",
+          key: "id",
+          as: "customerId",
+        },
+      },
       createdAt: { allowNull: false, type: Sequelize.DATE },
       updatedAt: { allowNull: false, type: Sequelize.DATE },
     });

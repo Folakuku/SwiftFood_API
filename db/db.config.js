@@ -28,6 +28,12 @@ const {
 //   );
 // }
 
+// const sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
+//   host: DB_HOST,
+//   port: DB_PORT,
+//   dialect: "postgres",
+// });
+
 const env = process.env.NODE_ENV.trim();
 let sequelize;
 if (process.env.NODE_ENV.trim() == "development") {
@@ -37,7 +43,7 @@ if (process.env.NODE_ENV.trim() == "development") {
     dialect: "postgres",
   });
 } else {
-  sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
+  sequelize = new Sequelize(DB_NAME_P, DB_USERNAME_P, DB_PASSWORD_P, {
     host: DB_HOST_P,
     port: DB_PORT,
     dialect: DIALECT_P,
