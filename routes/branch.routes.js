@@ -1,10 +1,11 @@
 const router = require("express").Router();
-const { isVendor, isBranch } = require("../middlewares/checkAuth");
+const { isVendor, isBranch, isLoggedIn } = require("../middlewares/checkAuth");
 const { generateHashedPassword } = require("../utils/password");
 const { errorMsg, successMsg } = require("../utils/response");
 const { BranchSignupValidation } = require("../middlewares/validators");
 const { Branch } = require("../models/branch.model");
 const { SalesHistory } = require("../models/salesHistory.model");
+const { BranchRating } = require("../models/branchRating.model");
 
 // Get Branches
 router.get("/", async (req, res) => {
@@ -155,6 +156,23 @@ router.get("/:branchName/sales", async (req, res) => {
   } catch (err) {
     console.log(err);
     return errorMsg(res, "UNKNOWN ERROR", 500, err.message);
+  }
+});
+
+// Rate Branch
+router.post("/:id/rate", isLoggedIn, async (req, res) => {
+  if (!req.body.rating || !req.body.review) {
+    return errorMsg(res, "rating and review are required", 400);
+  }
+  req.body.branchId = req.params.id;
+  req.body.customerId = req.user.id;
+  req.body.authorName = req.user.first_name;
+  try {
+    const rating = await BranchRating.create(req.body);
+    successMsg(res, "Review saved", rating, 201);
+  } catch (error) {
+    console.log(error);
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
   }
 });
 
