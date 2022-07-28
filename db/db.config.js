@@ -28,26 +28,32 @@ const {
 //   );
 // }
 
-const env = process.env.NODE_ENV.trim();
-let sequelize;
-if (process.env.NODE_ENV.trim() == "development") {
-  sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
-    host: DB_HOST,
-    port: DB_PORT,
-    dialect: "postgres",
-  });
-} else {
-  sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
-    host: DB_HOST_P,
-    port: DB_PORT,
-    dialect: DIALECT_P,
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
-    },
-  });
-}
+const sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
+  host: DB_HOST,
+  port: DB_PORT,
+  dialect: "postgres",
+});
+
+// const env = process.env.NODE_ENV.trim();
+// let sequelize;
+// if (process.env.NODE_ENV.trim() == "development") {
+//   sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
+//     host: DB_HOST,
+//     port: DB_PORT,
+//     dialect: "postgres",
+//   });
+// } else {
+//   sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
+//     host: DB_HOST_P,
+//     port: DB_PORT,
+//     dialect: DIALECT_P,
+//     dialectOptions: {
+//       ssl: {
+//         require: true,
+//         rejectUnauthorized: false,
+//       },
+//     },
+//   });
+// }
 
 module.exports = { sequelize };

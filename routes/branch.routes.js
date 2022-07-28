@@ -159,23 +159,6 @@ router.get("/:branchName/sales", async (req, res) => {
   }
 });
 
-// Rate Branch
-router.post("/:id/rate", isLoggedIn, async (req, res) => {
-  if (!req.body.rating || !req.body.review) {
-    return errorMsg(res, "rating and review are required", 400);
-  }
-  req.body.branchId = req.params.id;
-  req.body.customerId = req.user.id;
-  req.body.authorName = req.user.first_name;
-  try {
-    const rating = await BranchRating.create(req.body);
-    successMsg(res, "Review saved", rating, 201);
-  } catch (error) {
-    console.log(error);
-    errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
-  }
-});
-
 // Delete Branch
 router.delete("/delete/:id", isVendor, async (req, res) => {
   try {
