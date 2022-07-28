@@ -25,7 +25,17 @@ module.exports = {
       landmark: { type: Sequelize.STRING },
       isVerified: { type: Sequelize.BOOLEAN, defaultValue: false },
       password: { type: Sequelize.STRING, allowNull: false },
-      vendorId: { type: Sequelize.INTEGER, allowNull: false },
+      vendorId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+        references: {
+          model: "vendors",
+          key: "id",
+          as: "vendorId",
+        },
+      },
       createdAt: { allowNull: false, type: Sequelize.DATE },
       updatedAt: { allowNull: false, type: Sequelize.DATE },
     });

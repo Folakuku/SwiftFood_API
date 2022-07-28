@@ -16,6 +16,10 @@ router.get("/", async (req, res) => {
   }
 });
 
+// ============================================================
+// ==========IF A TRANSACTION IS CANCELLED DELETE ORDER========
+// ============================================================
+
 // Payment
 router.post("/payment", async (req, res) => {
   try {
@@ -36,4 +40,8 @@ router.post("/payment", async (req, res) => {
     errorMsg(error);
   }
 });
+
+// ============================================================
+// ==========IF A TRANSACTION IS CANCELLED DELETE ORDER========
+// ============================================================
 module.exports = router;

@@ -103,9 +103,9 @@ router.put("/update/:id", isBranch, upload.single("image"), async (req, res) => 
   try {
     let { category, ...change } = req.body;
     let meal = await Meal.findOne({ where: { id: req.params.id } });
-    // if (req.user.id !== meal.branchId) {
-    //   return errorMsg(res, "UNAUTHORIZED", 401);
-    // }
+    if (req.user.id !== meal.branchId) {
+      return errorMsg(res, "UNAUTHORIZED", 401);
+    }
     try {
       // ----------Setting Image----------
       if (req.file) {
