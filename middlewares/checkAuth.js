@@ -1,6 +1,8 @@
-const { Vendor, Branch, Customer } = require("../models");
 const { verifyToken } = require("../utils/token");
 const { errorMsg } = require("../utils/response");
+const { Vendor } = require("../models/vendor.model");
+const { Branch } = require("../models/branch.model");
+const { Customer } = require("../models/customer.model");
 
 const checkRole = (res, authHeader) => {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {

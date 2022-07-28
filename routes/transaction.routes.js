@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const { Transaction } = require("../models");
 const { isLoggedIn } = require("../middlewares/checkAuth");
+const { Transaction } = require("../models/transaction.model");
 const { errorMsg, successMsg } = require("../utils/response");
 
 // GET all transactions

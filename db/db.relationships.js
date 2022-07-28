@@ -1,37 +1,35 @@
-// const {
-//   Vendor,
-//   Branch,
-//   Customer,
-//   Meal,
-//   Transaction,
-//   Order,
-//   SalesHistory,
-//   MealReview,
-//   BranchRating,
-// } = require("../models");
+const { Branch } = require("../models/branch.model");
+const { Customer } = require("../models/customer.model");
+const { Meal } = require("../models/meal.model");
+const { Order } = require("../models/order.model");
+const { SalesHistory } = require("../models/salesHistory.model");
+const { Transaction } = require("../models/transaction.model");
+const { Vendor } = require("../models/vendor.model");
 
-// // Vendor.hasMany(Branch, {
-// //   foreignKey: "vendorId",
-// // });
-// // Branch.belongsTo(Vendor, {
-// //   foreignKey: "vendorId",
-// // });
-// // Customer.hasMany(Transaction);
-// // Transaction.belongsTo(Customer);
-// // Transaction.belongsToMany(Meal, { through: Order });
-// // Meal.belongsToMany(Transaction, { through: Order });
-// // Meal.belongsTo(Branch);
-// // Branch.hasMany(Meal);
-// // SalesHistory.hasMany(Order);
-// // Order.belongsTo(SalesHistory);
-// // Branch.hasOne(SalesHistory);
-// // SalesHistory.belongsTo(Branch);
-// // // Here
-// Branch.hasMany(BranchRating);
-// Customer.hasMany(BranchRating);
-// BranchRating.belongsTo(Branch);
-// BranchRating.belongsTo(Customer);
-// Meal.hasMany(MealReview);
-// Customer.hasMany(MealReview);
-// MealReview.belongsTo(Meal);
-// MealReview.belongsTo(Customer);
+Branch.belongsTo(Vendor, { foreignKey: "vendorId", as: "vendor" });
+Branch.hasMany(Meal, { foreignKey: "branchId", as: "meals" });
+Branch.hasOne(SalesHistory, { foreignKey: "branchId", as: "sales" });
+Customer.hasMany(Transaction, { foreignKey: "customerId", as: "transactions" });
+Meal.belongsToMany(Transaction, {
+  through: Order,
+  foreignKey: "mealId",
+  as: "transactions",
+});
+Meal.hasMany(Order, { as: "orders", foreignKey: "mealId" });
+Meal.belongsTo(Branch, { foreignKey: "branchId", as: "branch" });
+Order.belongsTo(Meal, { foreignKey: "mealId", as: "meals" });
+Order.belongsTo(Transaction, {
+  foreignKey: "transactionId",
+  as: "transactions",
+});
+Order.belongsTo(SalesHistory, { foreignKey: "salesId", as: "sales" });
+SalesHistory.belongsTo(Branch, { as: "branch", foreignKey: "branchId" });
+SalesHistory.hasMany(Order, { as: "orders", foreignKey: "salesId" });
+Transaction.belongsTo(Customer, { foreignKey: "customerId", as: "customer" });
+Transaction.belongsToMany(Meal, {
+  through: Order,
+  foreignKey: "transactionId",
+  as: "meals",
+});
+Transaction.hasMany(Order, { as: "orders", foreignKey: "transactionId" });
+Vendor.hasMany(Branch, { foreignKey: "vendorId", as: "branches" });

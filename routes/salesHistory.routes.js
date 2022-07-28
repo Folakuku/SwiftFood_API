@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const { SalesHistory, Order } = require("../models");
 const { isLoggedIn, isVendor, isAdmin } = require("../middlewares/checkAuth");
+const { SalesHistory } = require("../models/salesHistory.model");
 const { errorMsg, successMsg } = require("../utils/response");
 
 router.post("/:meal", isLoggedIn, (req, res) => {
