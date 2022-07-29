@@ -73,10 +73,11 @@ router.post(
 // Branch Login
 router.post("/branches/login", BranchSigninValidation, async (req, res) => {
   try {
-    const { branchName, password } = req.body;
+    let { branchName, password } = req.body;
     if (!branchName || !password) {
       return errorMsg(res, "branchName and password is required", 400);
     }
+    branchName = branchName.toLowerCase();
     const branch = await Branch.findOne({ where: { branchName } });
     if (!branch) {
       return errorMsg(res, "branch not registered", 400);
@@ -109,10 +110,13 @@ router.post(
           "first_name,last_name,email,phone and password are required for registration"
         );
       }
-      const exist = await Customer.findOne({ where: { email } });
+      const exist = await Customer.findOne({
+        where: { email: email.toLowerCase() },
+      });
       if (exist) {
         return errorMsg(res, "Email has already been registered");
       }
+      req.body.email = email.toLowerCase();
       req.body.password = generateHashedPassword(password);
       const customer = await Customer.create(req.body);
       const token = generateToken(customer.id, "customer");
@@ -134,10 +138,11 @@ router.post(
 // Customer Login
 router.post("/customers/login", SigninValidation, async (req, res) => {
   try {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
     if (!email || !password) {
       return errorMsg(res, "email and password are required for login");
     }
+    email = email.toLowerCase();
     const customer = await Customer.findOne({ where: { email } });
     if (!customer) {
       return errorMsg(res, "Email not registered");
@@ -165,6 +170,8 @@ router.post("/vendors/register", VendorSignupValidation, async (req, res) => {
         message: "brandName, email, phone and password must be supplied",
       });
     }
+    req.body.brandName = brandName.toLowerCase();
+    req.body.email = email.toLowerCase();
 
     if (password.length < 6) {
       return res.status(400).json({
@@ -181,7 +188,6 @@ router.post("/vendors/register", VendorSignupValidation, async (req, res) => {
       });
     }
 
-    req.body.brandName = brandName.toLowerCase();
     req.body.password = generateHashedPassword(password);
     const vendor = await Vendor.create(req.body);
     const token = generateToken(vendor.id, "vendor");
@@ -210,7 +216,9 @@ router.post("/vendors/login", SigninValidation, async (req, res) => {
         .status(400)
         .json({ status: false, message: "Email and password is required" });
     }
-    const vendor = await Vendor.findOne({ where: { email } });
+    const vendor = await Vendor.findOne({
+      where: { email: email.toLowerCase() },
+    });
     if (!vendor) {
       return res
         .status(400)

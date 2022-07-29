@@ -17,7 +17,8 @@ module.exports = {
           street: "olororo street",
           landmark: "jobele",
           isVerified: true,
-          password: "EMPcUB1yhOFTCty6SZCyhO86NxHnCsnhA0ap6Wfgut7raoGMjh9DC",
+          password:
+            "$2a$10$Rvs05xCBJ0T10fPVeL.d0uqV0DPrfbmGOFgBxNfs9InXU0FuaPrtu",
           vendorId: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -34,7 +35,8 @@ module.exports = {
           street: "dambaba",
           landmark: "joblin",
           isVerified: true,
-          password: "EMPcUB1yhOFTCty6SZCyhO86NxHnCsnhA0ap6Wfgut7raoGMjh9DC",
+          password:
+            "$2a$10$Rvs05xCBJ0T10fPVeL.d0uqV0DPrfbmGOFgBxNfs9InXU0FuaPrtu",
           vendorId: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -51,7 +53,8 @@ module.exports = {
           street: "bisi",
           landmark: "igbona",
           isVerified: true,
-          password: "EMPcUB1yhOFTCty6SZCyhO86NxHnCsnhA0ap6Wfgut7raoGMjh9DC",
+          password:
+            "$2a$10$Rvs05xCBJ0T10fPVeL.d0uqV0DPrfbmGOFgBxNfs9InXU0FuaPrtu",
           vendorId: 3,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -68,7 +71,8 @@ module.exports = {
           street: "gra",
           landmark: "laro",
           isVerified: true,
-          password: "EMPcUB1yhOFTCty6SZCyhO86NxHnCsnhA0ap6Wfgut7raoGMjh9DC",
+          password:
+            "$2a$10$Rvs05xCBJ0T10fPVeL.d0uqV0DPrfbmGOFgBxNfs9InXU0FuaPrtu",
           vendorId: 4,
           createdAt: new Date(),
           updatedAt: new Date(),

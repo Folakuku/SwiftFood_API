@@ -6,7 +6,6 @@ module.exports = {
       "vendors",
       [
         {
-          id: 1,
           brandName: "dominos pizza",
           email: "giwaolaitan31@gmail.com",
           phone: "080212331",
@@ -20,7 +19,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 2,
           brandName: "kfc chicken",
           email: "balominah@gmail.com",
           phone: "080212331",
@@ -34,7 +32,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 3,
           brandName: "chicken republic",
           email: "maryamasabi1@gmail.com",
           phone: "080212331",
@@ -48,7 +45,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 4,
           brandName: "mamaputin",
           email: "mamaputin@gmail.com",
           phone: "080212331",
@@ -62,7 +58,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 5,
           brandName: "Mr biggs",
           email: "mrbiggs@gmail.com",
           phone: "08021233112",
@@ -75,7 +70,6 @@ module.exports = {
           updatedAt: "2022-07-23T16:07:40.656Z",
         },
         {
-          id: 6,
           brandName: "sizzlers",
           email: "sizzlers@gmail.com",
           phone: "08021233112",
@@ -88,7 +82,6 @@ module.exports = {
           updatedAt: "2022-07-23T16:09:31.028Z",
         },
         {
-          id: 7,
           brandName: "tantalizer",
           email: "tantalizer@gmail.com",
           phone: "08021233112",
@@ -101,7 +94,6 @@ module.exports = {
           updatedAt: "2022-07-23T16:11:17.535Z",
         },
         {
-          id: 8,
           brandName: "the place",
           email: "theplace@gmail.com",
           phone: "08021233112",
@@ -114,7 +106,6 @@ module.exports = {
           updatedAt: "2022-07-23T16:12:07.860Z",
         },
         {
-          id: 9,
           brandName: "sweet sensation",
           email: "sweetsensation@gmail.com",
           phone: "08021233112",
@@ -127,7 +118,6 @@ module.exports = {
           updatedAt: "2022-07-23T16:12:47.659Z",
         },
         {
-          id: 10,
           brandName: "bukka hut",
           email: "bukkahut@gmail.com",
           phone: "08021233112",
@@ -140,7 +130,6 @@ module.exports = {
           updatedAt: "2022-07-23T16:13:20.884Z",
         },
         {
-          id: 11,
           brandName: "mama cass",
           email: "mamacass@gmail.com",
           phone: "08021233112",
@@ -153,7 +142,6 @@ module.exports = {
           updatedAt: "2022-07-23T16:13:48.617Z",
         },
         {
-          id: 12,
           brandName: "savour",
           email: "savour@gmail.com",
           phone: "08021233112",

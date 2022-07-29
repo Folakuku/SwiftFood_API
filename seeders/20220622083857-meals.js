@@ -6,7 +6,6 @@ module.exports = {
       "meals",
       [
         {
-          id: 1,
           name: "pizza",
           brandName: "dominos pizza",
           price: 3000,
@@ -21,7 +20,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 2,
           name: "baked chicken",
           brandName: "kfc chicken",
           price: 2000,
@@ -36,7 +34,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 3,
           name: "jollof rice",
           brandName: "mamaputin",
           price: 3000,
@@ -51,7 +48,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 4,
           name: "chips",
           brandName: "chicken republic",
           price: 2500,
@@ -66,7 +62,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 5,
           name: "spaghetti",
           brandName: "chicken republic",
           price: 3500,
@@ -81,7 +76,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 6,
           name: "chicken",
           brandName: "kfc chicken",
           price: 2000,
@@ -96,7 +90,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 7,
           name: "bread",
           brandName: "chicken republic",
           price: 3000,
@@ -111,7 +104,6 @@ module.exports = {
           updatedAt: "2022-07-23T16:02:35.366Z",
         },
         {
-          id: 8,
           name: "combo pack",
           brandName: "chicken republic",
           price: 5000,
@@ -126,7 +118,6 @@ module.exports = {
           updatedAt: "2022-07-23T16:03:31.704Z",
         },
         {
-          id: 9,
           name: "rice",
           brandName: "chicken republic",
           price: 2000,
@@ -141,7 +132,6 @@ module.exports = {
           updatedAt: "2022-07-23T16:03:57.448Z",
         },
         {
-          id: 10,
           name: "vegen meal",
           brandName: "chicken republic",
           price: 5000,
@@ -156,7 +146,6 @@ module.exports = {
           updatedAt: "2022-07-23T16:04:46.360Z",
         },
         {
-          id: 11,
           name: "burger combo",
           brandName: "chicken republic",
           price: 5000,
@@ -171,7 +160,6 @@ module.exports = {
           updatedAt: "2022-07-23T16:05:07.405Z",
         },
         {
-          id: 12,
           name: "sandwich",
           brandName: "chicken republic",
           price: 1000,
