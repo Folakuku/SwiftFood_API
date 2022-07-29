@@ -35,6 +35,22 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Get Single Vendor
+router.get("/:id", async (req, res) => {
+  try {
+    const vendor = await Vendor.findOne({ where: { id: req.params.id } });
+    if (!vendor) {
+      console.log("There are no vendor");
+      return errorMsg(res, "Vendor Id Error", 400);
+    }
+    vendor.set({ password: undefined });
+    successMsg(res, "Vendor information", vendor);
+  } catch (error) {
+    console.log(error);
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
+  }
+});
+
 // Get All Branches Under A Vendor
 router.get("/branches", isVendor, async (req, res) => {
   try {
