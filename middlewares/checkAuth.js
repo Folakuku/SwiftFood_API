@@ -26,11 +26,12 @@ const isVendor = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     const payload = checkRole(res, authHeader);
-    if (!payload || !payload.role) {
-      return errorMsg(res, "Token Error", 401);
+    if (!payload) {
+      return errorMsg(res, "UNAUTHORIZED", 401);
     }
     if (payload.error) {
-      return errorMsg(res, "Token Error", 401, payload.error);
+      console.log(error);
+      return errorMsg(res, "Token Error", 500, payload.error.message);
     }
     const role = payload.role;
     if (!role || role !== "vendor") {
@@ -42,7 +43,7 @@ const isVendor = async (req, res, next) => {
     const vendor = await Vendor.findOne({ where: { id: payload.id } });
     if (!vendor) {
       console.log("no vendor");
-      return errorMsg(res, "VendorId Not Recognized");
+      return errorMsg(res, "UNAUTHORIZED");
     }
     vendor.set({ password: undefined });
     req.user = vendor;
@@ -57,14 +58,14 @@ const isBranch = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     const payload = checkRole(res, authHeader);
-    if (!payload || !payload.role) {
-      return errorMsg(res, "Token Error", 401);
+    if (!payload) {
+      return errorMsg(res, "UNAUTHORIZED", 401);
     }
     if (payload.error) {
-      return errorMsg(res, "Token Error", 401, payload.error);
+      console.log(error);
+      return errorMsg(res, "Token Error", 500, payload.error.message);
     }
-    const role = payload.role;
-    if (!role || role !== "branch") {
+    if (payload?.role !== "branch") {
       return res.status(401).json({
         status: false,
         message: "Route is only accessible to branches",
@@ -87,16 +88,26 @@ const isLoggedIn = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     const payload = checkRole(res, authHeader);
-    const role = payload.role;
-    if (!role || role !== "customer") {
+    if (!payload) {
+      return errorMsg(res, "UNAUTHORIZED", 401);
+    }
+    if (payload?.error) {
+      console.log(error);
+      return errorMsg(res, "Token Error", 500, payload.error.message);
+    }
+    if (payload?.role !== "customer") {
       return errorMsg(res, "Route is only accessible to logged in customers");
     }
     const customer = await Customer.findOne({ where: { id: payload.id } });
+    if (!customer) {
+      return errorMsg(res, "UNAUTHORIZED", 401);
+    }
     customer.set({ password: undefined });
     req.user = customer;
     next();
   } catch (error) {
-    errorMsg(res, "UNKNOWN ERROR", 500, error.message);
+    console.log(error);
+    errorMsg(res, "UNKNOWN ERROR", 500, error.message || error);
   }
 };
 
