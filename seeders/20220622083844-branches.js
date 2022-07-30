@@ -11,6 +11,8 @@ module.exports = {
           email: "giwaolaitan31@gmail.com",
           phone: "080932232",
           rating: 3,
+          image:
+            "https://res.cloudinary.com/swiftfoodsng/image/upload/v1658410813/dominos%20pizza%20-image.png",
           status: "open",
           state: "oyo",
           city: "ibadan",
@@ -29,6 +31,8 @@ module.exports = {
           email: "balominah@gmail.com",
           phone: "080932232",
           rating: 5,
+          image:
+            "https://res.cloudinary.com/swiftfoodsng/image/upload/v1658410907/kfc%20chicken%20-image.jpg",
           status: "open",
           state: "oyo",
           city: "ibadan",
@@ -47,6 +51,8 @@ module.exports = {
           email: "maryamasabi1@gmail.com",
           phone: "080932232",
           rating: 4,
+          image:
+            "https://res.cloudinary.com/swiftfoodsng/image/upload/v1658411097/chicken%20republic-image.png",
           status: "open",
           state: "osun",
           city: "osogbo",
@@ -65,6 +71,8 @@ module.exports = {
           email: "mamaputin@gmail.com",
           phone: "080932232",
           rating: 2,
+          image:
+            "https://res.cloudinary.com/swiftfoodsng/image/upload/v1658411114/mamaputin-image.png",
           status: "open",
           state: "osun",
           city: "osogbo",

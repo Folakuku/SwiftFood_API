@@ -14,6 +14,7 @@ module.exports = {
       email: { type: Sequelize.STRING, allowNull: false },
       phone: { type: Sequelize.STRING, allowNull: false },
       rating: { type: Sequelize.INTEGER, defaultValue: 3, allowNull: false },
+      image: { type: Sequelize.STRING },
       status: {
         type: Sequelize.ENUM("open", "closed"),
         defaultValue: "open",

@@ -15,7 +15,7 @@ const {
 } = process.env;
 
 module.exports = {
-  developmen: {
+  development: {
     username: DB_USERNAME,
     password: DB_PASSWORD,
     database: DB_NAME,
@@ -23,7 +23,7 @@ module.exports = {
     port: DB_PORT,
     dialect: DIALECT,
   },
-  development: {
+  test: {
     username: DB_USERNAME_P,
     password: DB_PASSWORD_P,
     database: DB_NAME_P,

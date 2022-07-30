@@ -61,7 +61,8 @@ module.exports = {
           brandName: "Mr biggs",
           email: "mrbiggs@gmail.com",
           phone: "08021233112",
-          image: null,
+          image:
+            "https://res.cloudinary.com/swiftfoodsng/image/upload/v1659212596/vendor3_imryya.jpg",
           rating: 3,
           isVerified: false,
           password:
@@ -73,7 +74,8 @@ module.exports = {
           brandName: "sizzlers",
           email: "sizzlers@gmail.com",
           phone: "08021233112",
-          image: null,
+          image:
+            "https://res.cloudinary.com/swiftfoodsng/image/upload/v1659212596/vendor3_imryya.jpg",
           rating: 3,
           isVerified: false,
           password:
@@ -85,7 +87,8 @@ module.exports = {
           brandName: "tantalizer",
           email: "tantalizer@gmail.com",
           phone: "08021233112",
-          image: null,
+          image:
+            "https://res.cloudinary.com/swiftfoodsng/image/upload/v1659212596/vendor3_imryya.jpg",
           rating: 3,
           isVerified: false,
           password:
@@ -97,7 +100,8 @@ module.exports = {
           brandName: "the place",
           email: "theplace@gmail.com",
           phone: "08021233112",
-          image: null,
+          image:
+            "https://res.cloudinary.com/swiftfoodsng/image/upload/v1659212596/vendor3_imryya.jpg",
           rating: 3,
           isVerified: false,
           password:
@@ -109,7 +113,8 @@ module.exports = {
           brandName: "sweet sensation",
           email: "sweetsensation@gmail.com",
           phone: "08021233112",
-          image: null,
+          image:
+            "https://res.cloudinary.com/swiftfoodsng/image/upload/v1659212596/vendor3_imryya.jpg",
           rating: 3,
           isVerified: false,
           password:
@@ -121,7 +126,8 @@ module.exports = {
           brandName: "bukka hut",
           email: "bukkahut@gmail.com",
           phone: "08021233112",
-          image: null,
+          image:
+            "https://res.cloudinary.com/swiftfoodsng/image/upload/v1659212596/vendor3_imryya.jpg",
           rating: 3,
           isVerified: false,
           password:
@@ -133,7 +139,8 @@ module.exports = {
           brandName: "mama cass",
           email: "mamacass@gmail.com",
           phone: "08021233112",
-          image: null,
+          image:
+            "https://res.cloudinary.com/swiftfoodsng/image/upload/v1659212596/vendor3_imryya.jpg",
           rating: 3,
           isVerified: false,
           password:
@@ -145,7 +152,8 @@ module.exports = {
           brandName: "savour",
           email: "savour@gmail.com",
           phone: "08021233112",
-          image: null,
+          image:
+            "https://res.cloudinary.com/swiftfoodsng/image/upload/v1659212596/vendor3_imryya.jpg",
           rating: 3,
           isVerified: false,
           password:

@@ -13,6 +13,7 @@ const Branch = sequelize.define("branch", {
   email: { type: DataTypes.STRING, allowNull: false },
   phone: { type: DataTypes.STRING, allowNull: false },
   rating: { type: DataTypes.INTEGER, defaultValue: 3, allowNull: false },
+  image: { type: DataTypes.STRING },
   status: {
     type: DataTypes.ENUM("open", "closed"),
     defaultValue: "open",

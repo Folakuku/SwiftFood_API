@@ -56,6 +56,7 @@ router.post(
       req.body.state = state.toLowerCase();
       req.body.city = city.toLowerCase();
       req.body.brandName = vendor.brandName;
+      req.body.image = vendor.image;
       req.body.password = generateHashedPassword(password);
       const branch = await Branch.create(req.body);
       const branchId = branch.id;
@@ -172,19 +173,20 @@ router.post("/vendors/register", VendorSignupValidation, async (req, res) => {
     }
     req.body.brandName = brandName.toLowerCase();
     req.body.email = email.toLowerCase();
-
-    if (password.length < 6) {
-      return res.status(400).json({
-        status: false,
-        message: "Password must have at least 6 characters",
-      });
-    }
+    req.body.image =
+      "https://res.cloudinary.com/swiftfoodsng/image/upload/v1659212596/vendor3_imryya.jpg";
 
     const exist = await Vendor.findAll({ where: { email } });
     if (exist.length > 0) {
       return res.status(400).json({
         status: false,
         message: "Email already registered",
+      });
+    }
+    if (password.length < 6) {
+      return res.status(400).json({
+        status: false,
+        message: "Password must have at least 6 characters",
       });
     }
 
