@@ -19,6 +19,7 @@ const checkRole = (res, authHeader) => {
 
 const isAdmin = async (res, req, next) => {
   // check if admin
+  // req.user = admin;
   next();
 };
 
@@ -34,6 +35,10 @@ const isVendor = async (req, res, next) => {
       return errorMsg(res, "Token Error", 500, payload.error.message);
     }
     const role = payload.role;
+    if (role == "admin") {
+      // req.user = admin;
+      next();
+    }
     if (!role || role !== "vendor") {
       return res.status(401).json({
         status: false,
@@ -65,6 +70,10 @@ const isBranch = async (req, res, next) => {
       console.log(error);
       return errorMsg(res, "Token Error", 500, payload.error.message);
     }
+    if (payload.role == "admin") {
+      // req.user = admin;
+      next();
+    }
     if (payload?.role !== "branch") {
       return res.status(401).json({
         status: false,
@@ -94,6 +103,10 @@ const isLoggedIn = async (req, res, next) => {
     if (payload?.error) {
       console.log(error);
       return errorMsg(res, "Token Error", 500, payload.error.message);
+    }
+    if (payload.role == "admin") {
+      // req.user = admin;
+      next();
     }
     if (payload?.role !== "customer") {
       return errorMsg(res, "Route is only accessible to logged in customers");
